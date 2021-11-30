@@ -9,14 +9,21 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.stage.Stage;
+import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomber;
+import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
+import uet.oop.bomberman.entities.Oneal;
+import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.Wall;
 import uet.oop.bomberman.graphics.Sprite;
 import Menu.Menu;
 import Menu.MenuButton;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +36,10 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private List<Entity> entities = new ArrayList<>();
     private List<Entity> stillObjects = new ArrayList<>();
+    
+	private Bomber bomberman;
+//	private static Bom bomb;
+	private Portal portal;
 
 
     public static void main(String[] args) {
@@ -67,25 +78,53 @@ public class BombermanGame extends Application {
         };
         timer.start();
 
-        createMap();
-
-        Entity bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-        entities.add(bomberman);
+        try {
+			createMap();
+		} catch (IOException e) {
+			System.out.println("Exception in create map");
+			e.printStackTrace();
+		}
     }
 
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
-            }
-        }
+    public void createMap() throws IOException {
+		
+		FileReader fileReader = new FileReader("res/levels/Level" + "1" + ".txt");
+		BufferedReader buf = new BufferedReader(fileReader);
+		int rowCount = 0;
+		String line;
+		while ((line = buf.readLine()) != null) {
+			for (int i = 0; i < line.length(); i++) {
+				if (line.charAt(i) == '#') {
+					stillObjects.add(new Wall(i , rowCount , Sprite.wall.getFxImage()));
+				} 
+				else if(line.charAt(i) == ' ') {
+					stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+				}
+				else if(line.charAt(i) == '*') {
+						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
+				}
+				else if(line.charAt(i) == 'x') {
+						portal = new Portal(i , rowCount , Sprite.portal.getFxImage());
+						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
+				}
+				else if(line.charAt(i) == 'p') {
+						bomberman = new Bomber(i , rowCount , Sprite.player_right.getFxImage());
+						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+						entities.add(bomberman);
+				}
+				else if(line.charAt(i) == '1') {
+						entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
+						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+				}
+				else if(line.charAt(i) == '2') {
+						entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
+						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+				}
+			}
+			rowCount++;
+		}
+			
+		
     }
 
     public void update() {
