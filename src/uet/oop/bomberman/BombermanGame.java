@@ -4,10 +4,12 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomber;
@@ -29,18 +31,15 @@ import java.util.List;
 
 public class BombermanGame extends Application {
     
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+    public static final int WIDTH = 31;
+    public static final int HEIGHT = 13;
     
     private GraphicsContext gc;
     private Canvas canvas;
-    private List<Entity> entities = new ArrayList<>();
-    private List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> entities = new ArrayList<>();
+    private static List<Entity> stillObjects = new ArrayList<>();
     
 	private Bomber bomberman;
-//	private static Bom bomb;
-	private Portal portal;
-
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -48,19 +47,49 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        VBox root = new VBox();
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        canvas.requestFocus();
+        canvas.setFocusTraversable(true);
+        // xử lí khi nhấn phím
+        canvas.setOnKeyPressed(( KeyEvent event ) -> {
+            if (event.getCode() == KeyCode.D) {
+                bomberman.setDirectionRight(true);
+            }
+            if (event.getCode() == KeyCode.A) {
+                bomberman.setDirectionLeft(true);
+            }
+            if (event.getCode() == KeyCode.W) {
+                bomberman.setDirectionUp(true);
+            }
+            if (event.getCode() == KeyCode.S) {
+                bomberman.setDirectionDown(true);
+            }
+        });
+        //xử lí khi release
+        canvas.setOnKeyReleased((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.D) {
+                bomberman.setDirectionRight(false);
+            }
+            if (event.getCode() == KeyCode.A) {
+                bomberman.setDirectionLeft(false);
+            }
+            if (event.getCode() == KeyCode.W) {
+                bomberman.setDirectionUp(false);
+            }
+            if (event.getCode() == KeyCode.S) {
+                bomberman.setDirectionDown(false);
+            }
+        });
 		Menu menu = new Menu();
 		MenuButton startButton = menu.getStartButton();
 		Stage menuStage = menu.getMenuStage();
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				
-		        Group root = new Group();
 		        root.getChildren().add(canvas);
-		        
 		        Scene scene = new Scene(root);
 		        Stage gameStage = new Stage();
 		        gameStage.setScene(scene);
@@ -87,7 +116,6 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() throws IOException {
-		
 		FileReader fileReader = new FileReader("res/levels/Level" + "1" + ".txt");
 		BufferedReader buf = new BufferedReader(fileReader);
 		int rowCount = 0;
@@ -104,7 +132,7 @@ public class BombermanGame extends Application {
 						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
 				}
 				else if(line.charAt(i) == 'x') {
-						portal = new Portal(i , rowCount , Sprite.portal.getFxImage());
+						//portal = new Portal(i , rowCount , Sprite.portal.getFxImage());
 						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
 				}
 				else if(line.charAt(i) == 'p') {
@@ -123,8 +151,6 @@ public class BombermanGame extends Application {
 			}
 			rowCount++;
 		}
-			
-		
     }
 
     public void update() {
@@ -137,5 +163,14 @@ public class BombermanGame extends Application {
         entities.forEach(g -> g.render(gc));
     }
     
-
+    // get entity
+    public static Entity getEntity(int x , int y) {
+        for (Entity e : entities) {
+            if (e.compareCoordinate(x , y)) return e;
+        }
+        for (Entity e : stillObjects) {
+            if (e.compareCoordinate(x , y)) return e;
+        }
+        return null;
+    }
 }
