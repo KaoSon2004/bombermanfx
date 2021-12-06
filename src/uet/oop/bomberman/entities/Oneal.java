@@ -48,7 +48,7 @@ public class Oneal extends Entity {
                 direction = random.nextInt(4);
             }
         } else if (direction == 1) { // left
-            if (isCanMove(x - speed , y) && player.x <= this.x - 2) {
+            if (isCanMove(x - speed , y)) {
                 System.out.println("x va y ");
                 x -= speed;
                 if (num == 0) {

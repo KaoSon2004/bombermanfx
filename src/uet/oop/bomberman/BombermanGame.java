@@ -32,8 +32,8 @@ import java.util.List;
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
-    public static final int HEIGHT = 13;
-    
+    public static final int HEIGHT = 18;
+    public int level = 1;
     private GraphicsContext gc;
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
@@ -116,7 +116,7 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() throws IOException {
-		FileReader fileReader = new FileReader("res/levels/Level" + "1" + ".txt");
+		FileReader fileReader = new FileReader("res/levels/Level" + level + ".txt");
 		BufferedReader buf = new BufferedReader(fileReader);
 		int rowCount = 0;
 		String line;
