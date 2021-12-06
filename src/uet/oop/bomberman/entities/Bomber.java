@@ -24,7 +24,7 @@ public class Bomber extends Entity {
         count--;
         if (count == 0) {
             num++;
-            if (num > 3) {
+            if (num >= 3) {
                 num = 0;
             }
             count = 4;
@@ -168,7 +168,7 @@ public class Bomber extends Entity {
     }
     
     // kiểm tra va chạm
-    protected boolean collide(Entity e){
+    protected boolean collide(Entity e) {
         return (e instanceof Grass || e instanceof Bomber);
     }
 }

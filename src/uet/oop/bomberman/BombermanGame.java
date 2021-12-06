@@ -173,4 +173,11 @@ public class BombermanGame extends Application {
         }
         return null;
     }
+    
+    public static Entity getPlayer() {
+        for (Entity e : entities) {
+            if (e instanceof Bomber) return e;
+        }
+        return null;
+    }
 }
