@@ -24,7 +24,7 @@ public class MenuButton extends Button {
 		setStyle(ButtonFreeStyle);
 		initializeButtonListeners();
 	}
-	
+
 	private void setButtonFont() {
 		// TODO Auto-generated method stub
 		try {

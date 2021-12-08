@@ -45,5 +45,6 @@ public class MenuSubScene extends SubScene {
 	public AnchorPane getPane() {
 		return (AnchorPane) this.getRoot();
 	}
+ 
 }
 

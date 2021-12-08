@@ -18,11 +18,6 @@ import javafx.scene.layout.BackgroundRepeat;
 
 import javafx.stage.Stage;
 
-
-
-
-
-
 public class Menu {
 	private AnchorPane menuPane;
 	private Scene menuScene;
@@ -83,7 +78,7 @@ public class Menu {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				showSubScene(exitSubScene);
+				menuStage.close();
 			}
 		});
 		addMenuButton(menuButton);
@@ -145,21 +140,65 @@ public class Menu {
 	}
 	
 	private void createSubScene() {
-		//startSubScene = new MenuSubScene();
-		scoreSubScene = new MenuSubScene();
-		creditSubScene = new MenuSubScene();
-		helpSubScene = new MenuSubScene();
-		exitSubScene = new MenuSubScene();
-		//menuPane.getChildren().add(startSubScene);
-		menuPane.getChildren().add(scoreSubScene);
-		menuPane.getChildren().add(helpSubScene);
-		menuPane.getChildren().add(creditSubScene);
-		menuPane.getChildren().add(exitSubScene);
-		
+		createScoreSubScene();
+		createHelpSubScene();
+		createCreditSubScene();
 	}
 
-	
+	private void createScoreSubScene() {
+		scoreSubScene = new MenuSubScene();
+		menuPane.getChildren().add(scoreSubScene);
+	}
 
+	private void createHelpSubScene() {
+		helpSubScene = new MenuSubScene();
+		menuPane.getChildren().add(helpSubScene);
+		
+		InfoLabel banner = new InfoLabel("INSTRUCTIONS");
+		banner.setLayoutX(120);
+		banner.setLayoutY(-120);
+		helpSubScene.getPane().getChildren().add(banner);
+		
+		InfoLabel move = new InfoLabel("MOVE WITH W/A/S/D");
+		move.setLayoutX(120);
+		move.setLayoutY(-75);
+		helpSubScene.getPane().getChildren().add(move);
+		
+		InfoLabel bomb = new InfoLabel("BOMB WITH SPACE");
+		bomb.setLayoutX(120);
+		bomb.setLayoutY(-35);
+		helpSubScene.getPane().getChildren().add(bomb);
+		
+		InfoLabel target = new InfoLabel("CROSS THE PORTAL TO WIN");
+		target.setLayoutX(120);
+		target.setLayoutY(-0);
+		helpSubScene.getPane().getChildren().add(target);
+	}
+
+	private void createCreditSubScene() {
+		creditSubScene = new MenuSubScene();
+		menuPane.getChildren().add(creditSubScene);
+		
+		InfoLabel creators = new InfoLabel("CREATORS");
+		creators.setLayoutX(120);
+		creators.setLayoutY(-120);
+		creditSubScene.getPane().getChildren().add(creators);
+		
+		InfoLabel vdh = new InfoLabel("VU DUC HIEU");
+		vdh.setLayoutX(120);
+		vdh.setLayoutY(10);
+		creditSubScene.getPane().getChildren().add(vdh);
+		
+		InfoLabel cxs = new InfoLabel("CAO XUAN SON");
+		cxs.setLayoutX(120);
+		cxs.setLayoutY(-75);
+		creditSubScene.getPane().getChildren().add(cxs);
+		
+		InfoLabel nht = new InfoLabel("NGUYEN HOANG TUNG");
+		nht.setLayoutX(120);
+		nht.setLayoutY(-35);
+		creditSubScene.getPane().getChildren().add(nht);
+	}
 
 	private void showSubScene(MenuSubScene subScene) {
 		if (currentSubScene != null && currentSubScene != subScene) {
@@ -172,6 +211,4 @@ public class Menu {
 			currentSubScene = subScene;
 		}
 	}
-	
-	
 }

@@ -8,5 +8,4 @@ public class deConfig {
 	public static final int columns = 20;
 	
 	public static final int squareSize =  screenHeight / rows;
-
 }
