@@ -44,6 +44,8 @@ public class BombermanGame extends Application {
     
 	private Bomber bomberman;
 	private static Bomb bomb;
+	private static Portal portal;
+
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -137,11 +139,15 @@ public class BombermanGame extends Application {
 					stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 				}
 				else if(line.charAt(i) == '*') {
-						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
+					stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+					entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
+						
 				}
-				else if(line.charAt(i) == 'x') {
-						//portal = new Portal(i , rowCount , Sprite.portal.getFxImage());
+				else if(line.charAt(i) == 'x') {		
+						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+						portal = new Portal(i, rowCount, Sprite.portal.getFxImage());
 						entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));
+						
 				}
 				else if(line.charAt(i) == 'p') {
 						bomberman = new Bomber(i , rowCount , Sprite.player_right.getFxImage());
@@ -151,6 +157,7 @@ public class BombermanGame extends Application {
 				else if(line.charAt(i) == '1') {
 						entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+						
 				}
 				else if(line.charAt(i) == '2') {
 						entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
@@ -162,7 +169,13 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
-        entities.forEach(Entity::update);
+		for (int i = 0; i < entities.size(); i++) {
+			Entity entity = entities.get(i);
+			entity.update();
+//			if (entity.isRemoved()) {
+//				entities.remove(i);
+//			}
+		}
         if(bomb!=null) {
         	bomb.update();
         }
@@ -180,6 +193,7 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+        portal.render(gc);
         entities.forEach(g -> g.render(gc));
 		if (bomb != null) {
 			bomb.render(gc);
@@ -209,5 +223,8 @@ public class BombermanGame extends Application {
             if (e instanceof Bomber) return e;
         }
         return null;
+    }
+    public static List<Entity> getEntities() {
+    	return entities;
     }
 }

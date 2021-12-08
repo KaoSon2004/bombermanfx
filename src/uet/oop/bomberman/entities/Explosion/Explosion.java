@@ -6,7 +6,7 @@ import uet.oop.bomberman.graphics.Sprite;
 
 public class Explosion extends Entity {
 	private int num;
-	private int time = 200;
+	private int time = 100;
 	public Explosion(int xUnit, int yUnit, Image img, int num) {
 		super(xUnit, yUnit, img);
 		this.num = num;
