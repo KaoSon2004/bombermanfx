@@ -179,4 +179,12 @@ public class Bomber extends Entity {
     public int getY() {
     	return y;
     }
+    
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+    
+    public int getSpeed() {
+        return speed;
+    }
 }

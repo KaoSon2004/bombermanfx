@@ -194,7 +194,7 @@ public class Menu {
 		cxs.setLayoutY(-75);
 		creditSubScene.getPane().getChildren().add(cxs);
 		
-		InfoLabel nht = new InfoLabel("NGUYEN HOANG TUNG");
+		InfoLabel nht = new InfoLabel("NGUYEN DUC TUNG");
 		nht.setLayoutX(120);
 		nht.setLayoutY(-35);
 		creditSubScene.getPane().getChildren().add(nht);

@@ -20,6 +20,7 @@ import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Oneal;
 import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 import Menu.Menu;
 import Menu.MenuButton;
@@ -41,7 +42,7 @@ public class BombermanGame extends Application {
     private static List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
     private static List<Entity> explosions = new ArrayList<>();
-    
+    private static List<Entity> items = new ArrayList<>();
 	private Bomber bomberman;
 	private static Bomb bomb;
 	private static Portal portal;
@@ -163,6 +164,11 @@ public class BombermanGame extends Application {
 						entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 				}
+				else if(line.charAt(i) == 's') {
+                    items.add(new SpeedItem(i , rowCount , Sprite.powerup_speed.getFxImage()));
+                    stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                }
 			}
 			rowCount++;
 		}
@@ -176,6 +182,13 @@ public class BombermanGame extends Application {
 //				entities.remove(i);
 //			}
 		}
+		for (int i = 0; i < items.size(); i++) {
+            Entity entity = items.get(i);
+            entity.update();
+            if (entity.isRemoved()) {
+                items.remove(i);
+            }
+        }
         if(bomb!=null) {
         	bomb.update();
         }
@@ -193,6 +206,9 @@ public class BombermanGame extends Application {
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
+        if (items != null) {
+            items.forEach(g -> g.render(gc));
+        }
         portal.render(gc);
         entities.forEach(g -> g.render(gc));
 		if (bomb != null) {
@@ -226,5 +242,12 @@ public class BombermanGame extends Application {
     }
     public static List<Entity> getEntities() {
     	return entities;
+    }
+    
+    public static Entity getItem(int x, int y) {
+        for (Entity e : items) {
+            if (e.compareCoordinate(x , y)) return e;
+        }
+        return null;
     }
 }
