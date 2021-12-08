@@ -15,6 +15,8 @@ public abstract class Entity {
     protected int y;
 
     protected Image img;
+    
+    private boolean isRemoved = false;
 
     //Khá»Ÿi táº¡o Ä‘á»‘i tÆ°á»£ng, chuyá»ƒn tá»« tá»�a Ä‘á»™ Ä‘Æ¡n vá»‹ sang tá»�a Ä‘á»™ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {
@@ -30,6 +32,14 @@ public abstract class Entity {
 
     public boolean compareCoordinate(int x, int y) {
         return this.x == x && this.y == y;
+    }
+    
+    public void remove() {
+    	isRemoved = true;
+    }
+    
+    public boolean isRemoved() {
+    	return isRemoved;
     }
     
     

@@ -171,4 +171,12 @@ public class Bomber extends Entity {
     protected boolean collide(Entity e) {
         return (e instanceof Grass || e instanceof Bomber);
     }
+    
+    public int getX() {
+    	return x;
+    }
+    
+    public int getY() {
+    	return y;
+    }
 }

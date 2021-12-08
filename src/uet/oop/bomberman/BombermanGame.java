@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Balloon;
+import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Entity;
@@ -26,6 +27,7 @@ import Menu.MenuButton;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +40,10 @@ public class BombermanGame extends Application {
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
     private static List<Entity> stillObjects = new ArrayList<>();
+    private static List<Entity> explosions = new ArrayList<>();
     
 	private Bomber bomberman;
+	private static Bomb bomb;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -66,6 +70,10 @@ public class BombermanGame extends Application {
             }
             if (event.getCode() == KeyCode.S) {
                 bomberman.setDirectionDown(true);
+            }
+            if(event.getCode() == KeyCode.SPACE) {
+            	bomb = new Bomb(bomberman.getX() / Sprite.SCALED_SIZE
+            			, bomberman.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
             }
         });
         //xử lí khi release
@@ -155,12 +163,30 @@ public class BombermanGame extends Application {
 
     public void update() {
         entities.forEach(Entity::update);
+        if(bomb!=null) {
+        	bomb.update();
+        }
+		if (!explosions.isEmpty()) {
+			for (int i = 0; i < explosions.size(); i++) {
+				Entity entity = explosions.get(i);
+				entity.update();
+				if (entity.isRemoved()) {
+					explosions.remove(i);
+				}
+			}
+		}
     }
 
     public void render() {
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
+		if (bomb != null) {
+			bomb.render(gc);
+		}
+		if (!explosions.isEmpty()) {
+			explosions.forEach(g -> g.render(gc));
+		}
     }
     
     // get entity
@@ -174,6 +200,10 @@ public class BombermanGame extends Application {
         return null;
     }
     
+	public static void bombExplode( List<Entity> exs ) {
+		bomb = null;
+		explosions = exs;
+	}
     public static Entity getPlayer() {
         for (Entity e : entities) {
             if (e instanceof Bomber) return e;
