@@ -42,5 +42,11 @@ public abstract class Entity {
     	return isRemoved;
     }
     
+    public int getX() {
+    	return x;
+    }
     
+    public int getY() {
+    	return y;
+    }
 }

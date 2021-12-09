@@ -30,15 +30,16 @@ import Menu.MenuButton;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.management.BufferPoolMXBean;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 public class BombermanGame extends Application {
     
     public static final int WIDTH = 31;
     public static final int HEIGHT = 18;
-    public int level = 1;
+    public static int level = 1;
     private GraphicsContext gc;
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
@@ -120,16 +121,20 @@ public class BombermanGame extends Application {
             }
         };
         timer.start();
-
-        try {
+	    try {
 			createMap();
 		} catch (IOException e) {
 			System.out.println("Exception in create map");
 			e.printStackTrace();
 		}
+        
     }
 
     public void createMap() throws IOException {
+    	entities.clear();
+    	stillObjects.clear();
+    	items.clear();
+    	canvas.setDisable(false);
 		FileReader fileReader = new FileReader("res/levels/Level" + level + ".txt");
 		BufferedReader buf = new BufferedReader(fileReader);
 		int rowCount = 0;
@@ -188,6 +193,10 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+    	if(bomberman.isRemoved()) {
+    		System.out.println("Died");
+    		canvas.setDisable(true);
+    	}
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			entity.update();
@@ -263,10 +272,6 @@ public class BombermanGame extends Application {
         return null;
     }
     
-//	public static void bombExplode( List<Entity> exs ) {
-//		//bomb = null;
-//		explosions = exs;
-//	}
     public static Entity getPlayer() {
         for (Entity e : entities) {
             if (e instanceof Bomber) return e;
@@ -293,6 +298,17 @@ public class BombermanGame extends Application {
         return null;
     }
     
+    public static Entity getExplosion(int x, int y) {
+        if (!explosions.isEmpty()) {
+            for (int i = 0; i < explosions.size(); i++) {
+                Entity entity = explosions.get(i);
+                if (entity.compareCoordinate(x, y)) {
+                    return entity;
+                }
+            }
+        }
+        return null;
+    }
     public static Entity getBomb(int x, int y) {
         if (bombs != null) {
             for (int i = 0; i < bombs.size(); i++) {
@@ -304,4 +320,14 @@ public class BombermanGame extends Application {
         }
         return null;
     }
+    public static boolean nextLevel() {
+    	for(Entity entity : entities) {
+    		if(entity instanceof Balloon || entity instanceof Oneal) {
+    			return false;
+    		}
+    	}
+    	level ++;
+    	return true;
+    }
+    
 }

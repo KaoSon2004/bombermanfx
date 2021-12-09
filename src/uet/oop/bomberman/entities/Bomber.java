@@ -2,6 +2,7 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.entities.Explosion.Explosion;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Bomber extends Entity {
@@ -21,6 +22,7 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         handleMove();
+        isDied();
         count--;
         if (count == 0) {
             num++;
@@ -164,6 +166,8 @@ public class Bomber extends Entity {
         Entity entity2 = BombermanGame.getEntity(nextX_2 * size, nextY_2 * size);
         Entity entity3 = BombermanGame.getEntity(nextX_3 * size, nextY_3 * size);
         Entity entity4 = BombermanGame.getEntity(nextX_4 * size, nextY_4 * size);
+        
+
         return collide(entity4) && collide(entity3) && collide(entity2) && collide(entity);
     }
     
@@ -183,8 +187,31 @@ public class Bomber extends Entity {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
-    
+
     public int getSpeed() {
         return speed;
+    }
+    public void isDied() {
+    	int a = this.getX();
+    	int b = this.getY();
+        int size = Sprite.SCALED_SIZE;
+        int nextX_1 = (a / size);
+        int nextY_1 = b / size;
+
+        int nextX_2 = (a + size - 10) / size;
+        int nextY_2 = b / size;
+
+        int nextX_3 = a / size;
+        int nextY_3 = (b + size - 4) / size;
+
+        int nextX_4 = (a + size - 10) / size;
+        int nextY_4 = (b + size - 4) / size; 
+        Entity entity5 = BombermanGame.getExplosion(nextX_1 * size, nextY_1 * size);
+        Entity entity6 = BombermanGame.getExplosion(nextX_2 * size, nextY_2 * size);
+        Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
+        Entity entity8 = BombermanGame.getExplosion(nextX_4 * size, nextY_4 * size);
+        if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
+        	remove();
+        }
     }
 }
