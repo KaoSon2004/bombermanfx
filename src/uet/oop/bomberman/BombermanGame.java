@@ -263,10 +263,10 @@ public class BombermanGame extends Application {
         return null;
     }
     
-	public static void bombExplode( List<Entity> exs ) {
-		//bomb = null;
-		explosions = exs;
-	}
+//	public static void bombExplode( List<Entity> exs ) {
+//		//bomb = null;
+//		explosions = exs;
+//	}
     public static Entity getPlayer() {
         for (Entity e : entities) {
             if (e instanceof Bomber) return e;
@@ -278,6 +278,9 @@ public class BombermanGame extends Application {
     	return entities;
     }
     
+    public static List<Entity> getExplosions() {
+    	return explosions;
+    }
     public static Entity getItem(int x, int y) {
         if (!items.isEmpty()) {
             for (int i = 0; i < items.size(); i++) {

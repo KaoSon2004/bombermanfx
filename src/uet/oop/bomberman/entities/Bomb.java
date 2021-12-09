@@ -16,12 +16,12 @@ import uet.oop.bomberman.graphics.SpriteSheet;
 
 public class Bomb extends Entity{
 	private int timeToExplode = 200;
-	List<Entity> explosions;
+	//List<Entity> explosions;
 	private static int length = 0;
 	public boolean inBomb = true;
 	public Bomb(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
-		explosions = new ArrayList<>();
+		//explosions = new ArrayList<>();
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class Bomb extends Entity{
 		} else {
 		    this.remove();
 			addExplosion();
-			BombermanGame.bombExplode(explosions);
+			//BombermanGame.bombExplode(explosions);
 			bombExplode();
 		}
 		if (timeToExplode < 100) {
@@ -77,14 +77,14 @@ public class Bomb extends Entity{
 			if(!(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Wall 
 					|| BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Brick )  
 					&& i == length + 1) {
-				explosions.add(new Explosion((x - (length + 1) * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x - (length + 1) * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
 						, (y) / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_left_last.getFxImage(), 4));
 			}
 				
 			if(!(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Wall 
 					|| BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y)) instanceof Brick)
 					&& i <= length) {
-				explosions.add(new Explosion((x - i * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x - i * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
 						, (y) / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), 1));
 				System.out.println(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE, (y) / Sprite.SCALED_SIZE));
 			}
@@ -94,13 +94,13 @@ public class Bomb extends Entity{
 			if(!(BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE)  , (y) ) instanceof Wall 
 					|| BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE) , (y) ) instanceof Brick ) 
 					&& i == length + 1) {
-				explosions.add(new Explosion((x + (length + 1) * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x + (length + 1) * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
 						, (y) / Sprite.SCALED_SIZE, Sprite.explosion_horizontal_right_last.getFxImage(), 5));
 			}
 			if(!(BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE)  , (y) ) instanceof Wall 
 					 || BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE) , (y) ) instanceof Brick ) 
 					&& i <= length) {
-				explosions.add(new Explosion((x + i * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x + i * Sprite.SCALED_SIZE) / Sprite.SCALED_SIZE 
 						, (y) / Sprite.SCALED_SIZE, Sprite.explosion_horizontal.getFxImage(), 1));
 			}
 			else break;
@@ -109,13 +109,13 @@ public class Bomb extends Entity{
 			if(!(BombermanGame.getEntity((x)  , (y - i * Sprite.SCALED_SIZE) ) instanceof Wall
 					|| BombermanGame.getEntity((x)  , (y - i * Sprite.SCALED_SIZE) ) instanceof Brick) 
 					&& i == length + 1) {
-				explosions.add(new Explosion((x) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x) / Sprite.SCALED_SIZE 
 						, (y - (length + 1)  * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical_top_last.getFxImage(), 6));
 			}
 			if(!(BombermanGame.getEntity((x)  , (y - i * Sprite.SCALED_SIZE) ) instanceof Wall 
 					|| BombermanGame.getEntity((x)  , (y - i * Sprite.SCALED_SIZE) ) instanceof Brick) 
 					&& i <= length) {
-					explosions.add(new Explosion((x) / Sprite.SCALED_SIZE 
+					BombermanGame.getExplosions().add(new Explosion((x) / Sprite.SCALED_SIZE 
 					, (y - i * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage(), 2));
 			}
 			else break;
@@ -124,13 +124,13 @@ public class Bomb extends Entity{
 			if(!(BombermanGame.getEntity((x) , (y + i * Sprite.SCALED_SIZE) ) instanceof Wall 
 					|| BombermanGame.getEntity((x)  , (y + i * Sprite.SCALED_SIZE) ) instanceof Brick) 
 					&& i == length + 1) {
-				explosions.add(new Explosion((x) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x) / Sprite.SCALED_SIZE 
 						, (y + (length + 1) * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical_down_last.getFxImage(), 3));
 			}
 			if(!(BombermanGame.getEntity((x) , (y + i * Sprite.SCALED_SIZE) ) instanceof Wall 
 					|| BombermanGame.getEntity((x)  , (y + i * Sprite.SCALED_SIZE) ) instanceof Brick) 
 					&& i <= length) {
-				explosions.add(new Explosion((x) / Sprite.SCALED_SIZE 
+				BombermanGame.getExplosions().add(new Explosion((x) / Sprite.SCALED_SIZE 
 					, (y + i * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical.getFxImage(), 2));
 			}
 			else break;
@@ -144,7 +144,7 @@ public class Bomb extends Entity{
 //				, (y - (length + 1)  * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical_top_last.getFxImage(), 6));
 //		explosions.add(new Explosion((x) / Sprite.SCALED_SIZE 
 //				, (y + (length + 1) * Sprite.SCALED_SIZE ) / Sprite.SCALED_SIZE, Sprite.explosion_vertical_down_last.getFxImage(), 3));
-		explosions.add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE
+		BombermanGame.getExplosions().add(new Explosion(x / Sprite.SCALED_SIZE, y / Sprite.SCALED_SIZE
 				, Sprite.bomb_exploded.getFxImage(), 0));
 	}
 	
