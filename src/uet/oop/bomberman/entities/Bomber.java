@@ -12,7 +12,7 @@ public class Bomber extends Entity {
     private boolean directionDown = false;
     private boolean directionLeft = false;
     private boolean directionRight = false;
-    private int speed = Sprite.SCALED_SIZE/16;
+    private int speed = Sprite.SCALED_SIZE / 16;
 
     public Bomber(int x, int y, Image img) {
         super( x, y, img);

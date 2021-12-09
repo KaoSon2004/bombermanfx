@@ -17,7 +17,7 @@ import uet.oop.bomberman.graphics.SpriteSheet;
 public class Bomb extends Entity{
 	private int timeToExplode = 200;
 	List<Entity> explosions;
-	private int length = 0;
+	private static int length = 0;
 	public boolean inBomb = true;
 	public Bomb(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
@@ -186,4 +186,12 @@ public class Bomb extends Entity{
             inBomb = false;
         }
     }
+	
+	public static int getFlameLength() {
+	    return length;
+	}
+	
+	public static void upFlameLength() {
+	    length++;
+	}
 }

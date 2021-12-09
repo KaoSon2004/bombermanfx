@@ -107,14 +107,12 @@ public class Explosion extends Entity {
 				time --;
 			} else {
 				this.remove();
-			
 			}
 			if(time < 30) {
 				img = Sprite.explosion_vertical_top_last2.getFxImage();
 			}
 			else if(time < 60) {
 				img = Sprite.explosion_vertical_top_last1.getFxImage();
-				
 			}
 			break;
 		}

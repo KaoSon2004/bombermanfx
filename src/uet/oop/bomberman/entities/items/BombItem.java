@@ -6,9 +6,9 @@ import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class SpeedItem extends Entity{
+public class BombItem extends Entity {
 
-    public SpeedItem(int xUnit, int yUnit, Image img) {
+    public BombItem(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
         // TODO Auto-generated constructor stub
     }
@@ -16,12 +16,10 @@ public class SpeedItem extends Entity{
     @Override
     public void update() {
         // TODO Auto-generated method stub
-        //System.out.println(isRemoved());
-        
-        setSpeed();
+        setBomb();
     }
-    
-    public void setSpeed() {
+
+    public void setBomb() {
         Bomber bomber = (Bomber) BombermanGame.getPlayer();
         int a = bomber.getX();
         int b = bomber.getY();
@@ -37,44 +35,34 @@ public class SpeedItem extends Entity{
 
         int nextX_4 = (a + size - 10) / size;
         int nextY_4 = (b + size - 4) / size;
-        //System.out.println("x va y " + nextX_1 * size + " " + nextY_1 * size);
-        Entity entity = BombermanGame.getItem(nextX_1 * size, nextY_1 * size);
-        /*for (int i = 0; i < BombermanGame.items.size(); i++) {
-            System.out.println(entity == BombermanGame.items.get(i)); 
-        }
-        //System.out.println(entity instanceof SpeedItem);
-        //System.out.println(x + " " + y);
         
-        if (nextX_1 * size == x && nextY_1 * size == y) {
-            remove();
-        }*/
+        Entity entity = BombermanGame.getItem(nextX_1 * size, nextY_1 * size);
         Entity entity2 = BombermanGame.getItem(nextX_2 * size, nextY_2 * size);
         Entity entity3 = BombermanGame.getItem(nextX_3 * size, nextY_3 * size);
         Entity entity4 = BombermanGame.getItem(nextX_4 * size, nextY_4 * size);
-        if (entity instanceof SpeedItem) {
+        if (entity instanceof BombItem) {
             if (entity.equals(this)) {
-                bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                BombermanGame.numBomb++;
                 remove();
             }
         }
-        else if (entity2 instanceof SpeedItem) {
+        else if (entity2 instanceof BombItem) {
             if (entity2.equals(this)) {
-                bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                BombermanGame.numBomb++;
                 remove();
             }
         }
-        else if (entity3 instanceof SpeedItem) {
+        else if (entity3 instanceof BombItem) {
             if (entity3.equals(this)) {
-                bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                BombermanGame.numBomb++;
                 remove();
             }
         }
-        else if (entity4 instanceof SpeedItem) {
+        else if (entity4 instanceof BombItem) {
             if (entity4.equals(this)) {
-                bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                BombermanGame.numBomb++;
                 remove();
             }
         }
     }
-
 }

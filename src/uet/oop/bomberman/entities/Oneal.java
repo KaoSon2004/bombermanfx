@@ -62,7 +62,6 @@ public class Oneal extends Entity {
             }
         } else if (direction == 1) { // left
             if (isCanMove(x - speed , y)) {
-                System.out.println("x va y ");
                 x -= speed;
                 if (num == 0) {
                     img = Sprite.oneal_left1.getFxImage();

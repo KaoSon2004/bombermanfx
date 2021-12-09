@@ -20,6 +20,8 @@ import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Oneal;
 import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.items.BombItem;
+import uet.oop.bomberman.entities.items.FlameItem;
 import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 import Menu.Menu;
@@ -46,7 +48,7 @@ public class BombermanGame extends Application {
     private static List<Entity> bombs = new ArrayList<>();
 	private Bomber bomberman;
 	private static Portal portal;
-
+	public static int numBomb = 1;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -74,7 +76,7 @@ public class BombermanGame extends Application {
             if (event.getCode() == KeyCode.S) {
                 bomberman.setDirectionDown(true);
             }
-            if(event.getCode() == KeyCode.SPACE && bombs.size() < 2) {
+            if(event.getCode() == KeyCode.SPACE && bombs.size() < numBomb) {
             	Bomb bomb = new Bomb((bomberman.getX() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE
             			, (bomberman.getY() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
             	bombs.add(bomb);
@@ -170,6 +172,16 @@ public class BombermanGame extends Application {
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
                     //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
+				else if(line.charAt(i) == 'b') {
+                    items.add(new BombItem(i , rowCount , Sprite.powerup_bombs.getFxImage()));
+                    stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                }
+				else if(line.charAt(i) == 'f') {
+                    items.add(new FlameItem(i , rowCount , Sprite.powerup_flames.getFxImage()));
+                    stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
+                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                }
 			}
 			rowCount++;
 		}
@@ -183,14 +195,20 @@ public class BombermanGame extends Application {
 //				entities.remove(i);
 //			}
 		}
-		for (int i = 0; i < items.size(); i++) {
-            Entity entity = items.get(i);
-            entity.update();
-            if (entity.isRemoved()) {
-                items.remove(i);
-            }
-        }
-		if (bombs != null) {
+		//System.out.println(bomberman.getSpeed());
+		if (!items.isEmpty()) {
+		    System.out.println(items.size());
+		    for (int i = 0; i < items.size(); i++) {
+	            Entity entity = items.get(i);
+	            //System.out.println(i + " " + entity.isRemoved());
+	            if (entity.isRemoved()) {
+	                //System.out.println("?");
+	                items.remove(i); 
+	            }
+	            entity.update();
+	        }
+		}
+		if (!bombs.isEmpty()) {
             for (int i = 0; i < bombs.size(); i++) {
                 Bomb bomb = (Bomb) bombs.get(i);
                 bomb.update();
@@ -235,7 +253,6 @@ public class BombermanGame extends Application {
             for (int i = 0; i < bombs.size(); i++) {
                 Bomb bomb = (Bomb) bombs.get(i);
                 if (bomb.compareCoordinate(x , y) && bomb.inBomb == false) {
-                    System.out.println(true);
                     return bomb;
                 }
             }
@@ -247,7 +264,6 @@ public class BombermanGame extends Application {
     }
     
 	public static void bombExplode( List<Entity> exs ) {
-	    
 		//bomb = null;
 		explosions = exs;
 	}
@@ -257,13 +273,19 @@ public class BombermanGame extends Application {
         }
         return null;
     }
+    
     public static List<Entity> getEntities() {
     	return entities;
     }
     
     public static Entity getItem(int x, int y) {
-        for (Entity e : items) {
-            if (e.compareCoordinate(x , y)) return e;
+        if (!items.isEmpty()) {
+            for (int i = 0; i < items.size(); i++) {
+                Entity entity = items.get(i);
+                if (entity.compareCoordinate(x, y)) {
+                    return entity;
+                }
+            }
         }
         return null;
     }
@@ -273,7 +295,6 @@ public class BombermanGame extends Application {
             for (int i = 0; i < bombs.size(); i++) {
                 Bomb bomb = (Bomb) bombs.get(i);
                 if (bomb.compareCoordinate(x , y)) {
-                    System.out.println(true);
                     return bomb;
                 }
             }
