@@ -42,7 +42,6 @@ public class SpeedItem extends Entity{
         Entity entity4 = BombermanGame.getItem(nextX_4 * size, nextY_4 * size);
         if (entity instanceof SpeedItem || entity2 instanceof SpeedItem
                 || entity3 instanceof SpeedItem || entity4 instanceof SpeedItem) {
-            System.out.print("hello");
             bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
             this.remove();
         }

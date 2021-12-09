@@ -43,8 +43,8 @@ public class BombermanGame extends Application {
     private static List<Entity> stillObjects = new ArrayList<>();
     private static List<Entity> explosions = new ArrayList<>();
     private static List<Entity> items = new ArrayList<>();
+    private static List<Entity> bombs = new ArrayList<>();
 	private Bomber bomberman;
-	private static Bomb bomb;
 	private static Portal portal;
 
 
@@ -74,9 +74,10 @@ public class BombermanGame extends Application {
             if (event.getCode() == KeyCode.S) {
                 bomberman.setDirectionDown(true);
             }
-            if(event.getCode() == KeyCode.SPACE) {
-            	bomb = new Bomb(bomberman.getX() / Sprite.SCALED_SIZE
-            			, bomberman.getY() / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+            if(event.getCode() == KeyCode.SPACE && bombs.size() < 2) {
+            	Bomb bomb = new Bomb((bomberman.getX() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE
+            			, (bomberman.getY() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
+            	bombs.add(bomb);
             }
         });
         //xử lí khi release
@@ -189,8 +190,14 @@ public class BombermanGame extends Application {
                 items.remove(i);
             }
         }
-        if(bomb!=null) {
-        	bomb.update();
+		if (bombs != null) {
+            for (int i = 0; i < bombs.size(); i++) {
+                Bomb bomb = (Bomb) bombs.get(i);
+                bomb.update();
+                if (bomb.isRemoved()) {
+                    bombs.remove(i);
+                }
+            }
         }
 		if (!explosions.isEmpty()) {
 			for (int i = 0; i < explosions.size(); i++) {
@@ -211,8 +218,8 @@ public class BombermanGame extends Application {
         }
         portal.render(gc);
         entities.forEach(g -> g.render(gc));
-		if (bomb != null) {
-			bomb.render(gc);
+		if (bombs != null) {
+			bombs.forEach(g -> g.render(gc));
 		}
 		if (!explosions.isEmpty()) {
 			explosions.forEach(g -> g.render(gc));
@@ -224,6 +231,15 @@ public class BombermanGame extends Application {
         for (Entity e : entities) {
             if (e.compareCoordinate(x , y)) return e;
         }
+        if (bombs != null) {
+            for (int i = 0; i < bombs.size(); i++) {
+                Bomb bomb = (Bomb) bombs.get(i);
+                if (bomb.compareCoordinate(x , y) && bomb.inBomb == false) {
+                    System.out.println(true);
+                    return bomb;
+                }
+            }
+        }
         for (Entity e : stillObjects) {
             if (e.compareCoordinate(x , y)) return e;
         }
@@ -231,7 +247,8 @@ public class BombermanGame extends Application {
     }
     
 	public static void bombExplode( List<Entity> exs ) {
-		bomb = null;
+	    
+		//bomb = null;
 		explosions = exs;
 	}
     public static Entity getPlayer() {
@@ -247,6 +264,19 @@ public class BombermanGame extends Application {
     public static Entity getItem(int x, int y) {
         for (Entity e : items) {
             if (e.compareCoordinate(x , y)) return e;
+        }
+        return null;
+    }
+    
+    public static Entity getBomb(int x, int y) {
+        if (bombs != null) {
+            for (int i = 0; i < bombs.size(); i++) {
+                Bomb bomb = (Bomb) bombs.get(i);
+                if (bomb.compareCoordinate(x , y)) {
+                    System.out.println(true);
+                    return bomb;
+                }
+            }
         }
         return null;
     }

@@ -18,6 +18,7 @@ public class Bomb extends Entity{
 	private int timeToExplode = 200;
 	List<Entity> explosions;
 	private int length = 0;
+	public boolean inBomb = true;
 	public Bomb(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
 		explosions = new ArrayList<>();
@@ -27,7 +28,9 @@ public class Bomb extends Entity{
 	public void update() {
 		if(timeToExplode > 0) {
 			timeToExplode --;
+			setInBomb();
 		} else {
+		    this.remove();
 			addExplosion();
 			BombermanGame.bombExplode(explosions);
 			bombExplode();
@@ -152,4 +155,35 @@ public class Bomb extends Entity{
 	public Bomb getBomb() {
 		return this;
 	}
+	
+	public void setInBomb() {
+	    Bomber bomber = (Bomber) BombermanGame.getPlayer();
+        int a = bomber.getX();
+        int b = bomber.getY();
+        int size = Sprite.SCALED_SIZE;
+        int nextX_1 = a / size;
+        int nextY_1 = b / size;
+
+        int nextX_2 = (a + size - 10) / size;
+        int nextY_2 = b / size;
+
+        int nextX_3 = a / size;
+        int nextY_3 = (b + size - 4) / size;
+
+        int nextX_4 = (a + size - 10) / size;
+        int nextY_4 = (b + size - 4) / size;
+        
+        Entity entity = BombermanGame.getBomb(nextX_1 * size, nextY_1 * size);
+        Entity entity2 = BombermanGame.getBomb(nextX_2 * size, nextY_2 * size);
+        Entity entity3 = BombermanGame.getBomb(nextX_3 * size, nextY_3 * size);
+        Entity entity4 = BombermanGame.getBomb(nextX_4 * size, nextY_4 * size);        
+        if ((entity instanceof Bomb)
+                || (entity2 instanceof Bomb)
+                || (entity3 instanceof Bomb)
+                || (entity4 instanceof Bomb)) {
+          //  inBomb = false;
+        } else {
+            inBomb = false;
+        }
+    }
 }

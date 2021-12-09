@@ -11,6 +11,7 @@ public class Oneal extends Entity {
     private int num = 0;
     private int speed = 2;
     private Random random = new Random();
+    int vertical = -1;
     private int direction = random.nextInt(4);
     private Bomber player;
 
@@ -24,6 +25,18 @@ public class Oneal extends Entity {
 	    //System.out.println("x va y " + player.x + " " + player.y);
         handleMove();
         countAnimation --;
+        if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
+                && collide(BombermanGame.getEntity(x, y - 32)) 
+                && (collide(BombermanGame.getEntity(x + 32, y))
+                || collide(BombermanGame.getEntity(x - 32, y))))) {
+            direction = calculateDirection();
+        }
+        if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
+                || collide(BombermanGame.getEntity(x, y - 32)))
+                && collide(BombermanGame.getEntity(x + 32, y))
+                && collide(BombermanGame.getEntity(x - 32, y)))) {
+            direction = calculateDirection();
+        }
         if (countAnimation == 0) {
             num++;
             if (num >= 3) {
@@ -49,7 +62,7 @@ public class Oneal extends Entity {
             }
         } else if (direction == 1) { // left
             if (isCanMove(x - speed , y)) {
-                //System.out.println("x va y ");
+                System.out.println("x va y ");
                 x -= speed;
                 if (num == 0) {
                     img = Sprite.oneal_left1.getFxImage();
@@ -104,6 +117,14 @@ public class Oneal extends Entity {
         int nextX_4 = (a + size - 2) / size;
         int nextY_4 = (b + size - 2) / size;
         
+        Entity bomb = BombermanGame.getBomb(nextX_1 * size, nextY_1 * size);
+        Entity bomb2 = BombermanGame.getBomb(nextX_2 * size, nextY_2 * size);
+        Entity bomb3 = BombermanGame.getBomb(nextX_3 * size, nextY_3 * size);
+        Entity bomb4 = BombermanGame.getBomb(nextX_4 * size, nextY_4 * size);
+        if(bomb != null || bomb2 != null || bomb3 != null || bomb4 != null) {
+            return false;
+        }
+        
         Entity entity = BombermanGame.getEntity(nextX_1 * size, nextY_1 * size);
         Entity entity2 = BombermanGame.getEntity(nextX_2 * size, nextY_2 * size);
         Entity entity3 = BombermanGame.getEntity(nextX_3 * size, nextY_3 * size);
@@ -114,5 +135,41 @@ public class Oneal extends Entity {
     // kiểm tra va chạm
     protected boolean collide(Entity e){
         return (e instanceof Grass || e instanceof Bomber || e instanceof Oneal);
+    }
+    
+    public int calculateDirection() {
+        int vertical = random.nextInt(2);
+        if(vertical == 1) {
+            int v = calculateRowDirection();
+            if(v != -1)
+                return v;
+            else
+                return calculateColDirection();
+            
+        } else {
+            int h = calculateColDirection();
+            
+            if(h != -1)
+                return h;
+            else
+                return calculateRowDirection();
+        }
+        
+    }
+    
+    protected int calculateColDirection() {
+        if(player.x < this.x)
+            return 1;
+        else if(player.x > this.x)
+            return 0;
+        return -1;
+    }
+    
+    protected int calculateRowDirection() {
+        if(player.y < this.y)
+            return 2;
+        else if(player.y > this.y)
+            return 3;
+        return -1;
     }
 }

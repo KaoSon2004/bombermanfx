@@ -118,6 +118,14 @@ public class Balloon extends Entity {
         int nextX_4 = (a + size - 2) / size;
         int nextY_4 = (b + size - 2) / size;
         
+        Entity bomb = BombermanGame.getBomb(nextX_1 * size, nextY_1 * size);
+        Entity bomb2 = BombermanGame.getBomb(nextX_2 * size, nextY_2 * size);
+        Entity bomb3 = BombermanGame.getBomb(nextX_3 * size, nextY_3 * size);
+        Entity bomb4 = BombermanGame.getBomb(nextX_4 * size, nextY_4 * size);
+        if(bomb != null || bomb2 != null || bomb3 != null || bomb4 != null) {
+            return false;
+        }
+        
         Entity entity = BombermanGame.getEntity(nextX_1 * size, nextY_1 * size);
         Entity entity2 = BombermanGame.getEntity(nextX_2 * size, nextY_2 * size);
         Entity entity3 = BombermanGame.getEntity(nextX_3 * size, nextY_3 * size);
@@ -128,5 +136,9 @@ public class Balloon extends Entity {
     // kiểm tra va chạm
     protected boolean collide(Entity e){
         return (e instanceof Grass || e instanceof Bomber || e instanceof Balloon);
+    }
+    
+    protected boolean collideBomb(Entity e){
+        return (e instanceof Bomb);
     }
 }
