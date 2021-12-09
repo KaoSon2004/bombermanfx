@@ -43,19 +43,22 @@ public class Oneal extends Entity {
             }
         } else {
             handleMove();
+            checkPlayer();
             isDied();
             countAnimation --;
             if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
                     && collide(BombermanGame.getEntity(x, y - 32)) 
                     && (collide(BombermanGame.getEntity(x + 32, y))
                     || collide(BombermanGame.getEntity(x - 32, y))))) {
-                direction = calculateDirection();
+                //direction = calculateDirection();
+                direction = random.nextInt(4);
             }
             if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
                     || collide(BombermanGame.getEntity(x, y - 32)))
                     && collide(BombermanGame.getEntity(x + 32, y))
                     && collide(BombermanGame.getEntity(x - 32, y)))) {
-                direction = calculateDirection();
+                //direction = calculateDirection();
+                direction = random.nextInt(4);
             }
             if (countAnimation == 0) {
                 num++;
@@ -204,7 +207,7 @@ public class Oneal extends Entity {
     
     protected int calculateColDirection() {
         if (player != null) {
-            if(player.x < this.x)
+            if(player.x <= this.x)
                 return 1;
             else if(player.x > this.x)
                 return 0;
@@ -216,9 +219,36 @@ public class Oneal extends Entity {
         if (player != null) {
             if(player.y < this.y)
                 return 2;
-            else if(player.y > this.y)
+            else if(player.y >= this.y)
                 return 3; 
         }
         return -1;
+    }
+    
+    public void checkPlayer() {
+        Bomber bomber = (Bomber) BombermanGame.getPlayer();
+        if (bomber != null) {
+            //System.out.println(bomber.isRemoved());
+            if(bomber.getX() <= x + 30 && bomber.getY() <= y + 30
+                    && bomber.getX() + 22 >= x + 30 && bomber.getY() + 28 >= y + 30) {
+                bomber.remove();
+            }
+            if(bomber.getX() + 22 >= x && bomber.getY() <= y + 30
+                    && bomber.getX() <= x && bomber.getY() + 28 >= y + 30) {
+                bomber.remove();
+            }
+            if(bomber.getX() <= x + 30 && bomber.getY() + 28 >= y 
+                    && bomber.getX() + 22 >= x + 30 && bomber.getY() <= y) {
+                bomber.remove();
+            }
+            if(bomber.getX() + 22 >= x && bomber.getY() + 28 >= y 
+                    && bomber.getX() <= x && bomber.getY() <= y) {
+                bomber.remove();
+            }
+            if(bomber.getX() >= x && bomber.getY() >= y 
+                    && bomber.getX() + 22 <= x && bomber.getY() + 28<= y) {
+                bomber.remove();
+            }
+        }
     }
 }

@@ -10,7 +10,7 @@ public class Balloon extends Entity {
     // dem time de animation
     private int countAnimation = 4;
     private int num = 0;
-    private int speed = 0;
+    private int speed = 2;
     private Random random = new Random();
     private int direction = random.nextInt(4);
     //count = 0 -> new direction
@@ -43,6 +43,7 @@ public class Balloon extends Entity {
             }
         } else {
             handleMove();
+            checkPlayer();
             isDied();
             count --;
             countAnimation --;
@@ -171,14 +172,14 @@ public class Balloon extends Entity {
         int nextX_1 = (a / size);
         int nextY_1 = b / size;
 
-        int nextX_2 = (a + size - 10) / size;
+        int nextX_2 = (a + size - 2) / size;
         int nextY_2 = b / size;
 
         int nextX_3 = a / size;
-        int nextY_3 = (b + size - 4) / size;
+        int nextY_3 = (b + size - 2) / size;
 
-        int nextX_4 = (a + size - 10) / size;
-        int nextY_4 = (b + size - 4) / size; 
+        int nextX_4 = (a + size - 2) / size;
+        int nextY_4 = (b + size - 2) / size; 
         Entity entity5 = BombermanGame.getExplosion(nextX_1 * size, nextY_1 * size);
         Entity entity6 = BombermanGame.getExplosion(nextX_2 * size, nextY_2 * size);
         Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
@@ -186,6 +187,32 @@ public class Balloon extends Entity {
         if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
         	remove();
         }
-
+    }
+    
+    public void checkPlayer() {
+        Bomber bomber = (Bomber) BombermanGame.getPlayer();
+        if (bomber != null) {
+            //System.out.println(bomber.isRemoved());
+            if(bomber.getX() <= x + 30 && bomber.getY() <= y + 30
+                    && bomber.getX() + 22 >= x + 30 && bomber.getY() + 28 >= y + 30) {
+                bomber.remove();
+            }
+            if(bomber.getX() + 22 >= x && bomber.getY() <= y + 30
+                    && bomber.getX() <= x && bomber.getY() + 28 >= y + 30) {
+                bomber.remove();
+            }
+            if(bomber.getX() <= x + 30 && bomber.getY() + 28 >= y 
+                    && bomber.getX() + 22 >= x + 30 && bomber.getY() <= y) {
+                bomber.remove();
+            }
+            if(bomber.getX() + 22 >= x && bomber.getY() + 28 >= y 
+                    && bomber.getX() <= x && bomber.getY() <= y) {
+                bomber.remove();
+            }
+            if(bomber.getX() >= x && bomber.getY() >= y 
+                    && bomber.getX() + 22 <= x && bomber.getY() + 28<= y) {
+                bomber.remove();
+            }
+        }
     }
 }
