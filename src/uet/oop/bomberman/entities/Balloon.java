@@ -22,30 +22,50 @@ public class Balloon extends Entity {
 	
 	@Override
 	public void update() {
-	    //System.out.println("x va y " + this.x + " " + this.y);
-		handleMove();
-		isDied();
-		count --;
-		countAnimation --;
-		if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
-		        && collide(BombermanGame.getEntity(x, y - 32)) 
-		        && (collide(BombermanGame.getEntity(x + 32, y))
-		        || collide(BombermanGame.getEntity(x - 32, y))))) {
-            direction = random.nextInt(4);
-		}
-		if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
-                || collide(BombermanGame.getEntity(x, y - 32)))
-                && collide(BombermanGame.getEntity(x + 32, y))
-                && collide(BombermanGame.getEntity(x - 32, y)))) {
-            direction = random.nextInt(4);
+	    if(isRemoved() == true) {
+            if(time > 0) {
+                time --;
+            }
+            else {
+                BombermanGame.getEntities().remove(this);
+            }
+            if(time < 12) {
+                img = Sprite.mob_dead3.getFxImage();
+            }
+            else if(time < 24) {
+                img = Sprite.mob_dead2.getFxImage();
+            }
+            else if(time < 36) {
+                img = Sprite.mob_dead1.getFxImage();
+            }
+            else if (time < 70) {
+                img = Sprite.balloom_dead.getFxImage();
+            }
+        } else {
+            handleMove();
+            isDied();
+            count --;
+            countAnimation --;
+            if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
+                    && collide(BombermanGame.getEntity(x, y - 32)) 
+                    && (collide(BombermanGame.getEntity(x + 32, y))
+                    || collide(BombermanGame.getEntity(x - 32, y))))) {
+                direction = random.nextInt(4);
+            }
+            if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
+                    || collide(BombermanGame.getEntity(x, y - 32)))
+                    && collide(BombermanGame.getEntity(x + 32, y))
+                    && collide(BombermanGame.getEntity(x - 32, y)))) {
+                direction = random.nextInt(4);
+            }
+            if (countAnimation == 0) {
+                num++;
+                if (num >= 3) {
+                    num = 0;
+                }
+                countAnimation = 4;
+            }
         }
-		if (countAnimation == 0) {
-		    num++;
-		    if (num >= 3) {
-		        num = 0;
-		    }
-		    countAnimation = 4;
-		}
 	}
 
 	public void handleMove() {
@@ -164,8 +184,7 @@ public class Balloon extends Entity {
         Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
         Entity entity8 = BombermanGame.getExplosion(nextX_4 * size, nextY_4 * size);
         if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
-        	System.out.println(true);
-        	BombermanGame.getEntities().remove(this);
+        	remove();
         }
 
     }

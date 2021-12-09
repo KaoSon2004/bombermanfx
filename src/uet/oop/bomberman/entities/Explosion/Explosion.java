@@ -34,7 +34,6 @@ public class Explosion extends Entity {
 				time --;
 			} else {
 				this.remove();
-				
 			}
 			if(time < 30) {
 				img = Sprite.explosion_horizontal2.getFxImage();

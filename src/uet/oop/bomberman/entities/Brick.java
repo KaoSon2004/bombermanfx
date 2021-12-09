@@ -5,7 +5,7 @@ import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
 public class Brick extends Entity {
-	private int time = 200;
+	private int time = 100;
 	public Brick(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
 		
@@ -21,9 +21,12 @@ public class Brick extends Entity {
 			}
 			if(time < 30) {
 				img = Sprite.brick_exploded2.getFxImage();
+				System.out.println("?");
 			}
-			if(time < 70) {
+			else if(time < 50) {
 				img = Sprite.brick_exploded1.getFxImage();
+			} else {
+	             img = Sprite.brick_exploded.getFxImage();
 			}
 		}
 		

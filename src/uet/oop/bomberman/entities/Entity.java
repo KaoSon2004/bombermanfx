@@ -17,6 +17,7 @@ public abstract class Entity {
     protected Image img;
     
     private boolean isRemoved = false;
+    protected int time = 100;
 
     //Khá»Ÿi táº¡o Ä‘á»‘i tÆ°á»£ng, chuyá»ƒn tá»« tá»�a Ä‘á»™ Ä‘Æ¡n vá»‹ sang tá»�a Ä‘á»™ trong canvas
     public Entity( int xUnit, int yUnit, Image img) {

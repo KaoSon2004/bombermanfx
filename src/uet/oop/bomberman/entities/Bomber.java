@@ -21,18 +21,36 @@ public class Bomber extends Entity {
 
     @Override
     public void update() {
-        handleMove();
-        isDied();
-        count--;
-        if (count == 0) {
-            num++;
-            if (num >= 3) {
-                num = 0;
+        if(isRemoved() == true) {
+            if(time > 0) {
+                time --;
+                if(time < 15) {
+                    img = Sprite.player_dead3.getFxImage();
+                }
+                else if(time < 30) {
+                    img = Sprite.player_dead2.getFxImage();
+                }
+                else if (time < 60) {
+                    img = Sprite.player_dead1.getFxImage();
+                }
             }
-            count = 4;
-        }
-        if (!directionDown && !directionLeft && !directionRight && !directionUp) {
-            img = Sprite.player_down.getFxImage();
+            else {
+                BombermanGame.getEntities().remove(this);
+            }
+        } else {
+            handleMove();
+            isDied();
+            count--;
+            if (count == 0) {
+                num++;
+                if (num >= 3) {
+                    num = 0;
+                }
+                count = 4;
+            }
+            if (!directionDown && !directionLeft && !directionRight && !directionUp) {
+                img = Sprite.player_down.getFxImage();
+            }
         }
     }
     

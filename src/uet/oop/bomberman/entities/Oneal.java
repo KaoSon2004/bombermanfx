@@ -22,31 +22,77 @@ public class Oneal extends Entity {
 	
 	@Override
 	public void update() {
-	    //System.out.println("x va y " + player.x + " " + player.y);
-        handleMove();
-        countAnimation --;
-        if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
-                && collide(BombermanGame.getEntity(x, y - 32)) 
-                && (collide(BombermanGame.getEntity(x + 32, y))
-                || collide(BombermanGame.getEntity(x - 32, y))))) {
-            direction = calculateDirection();
-        }
-        if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
-                || collide(BombermanGame.getEntity(x, y - 32)))
-                && collide(BombermanGame.getEntity(x + 32, y))
-                && collide(BombermanGame.getEntity(x - 32, y)))) {
-            direction = calculateDirection();
-        }
-        if (countAnimation == 0) {
-            num++;
-            if (num >= 3) {
-                num = 0;
+        if(isRemoved() == true) {
+            if(time > 0) {
+                time --;
             }
-            countAnimation = 4;
+            else {
+                BombermanGame.getEntities().remove(this);
+            }
+            if(time < 12) {
+                img = Sprite.mob_dead3.getFxImage();
+            }
+            else if(time < 24) {
+                img = Sprite.mob_dead2.getFxImage();
+            }
+            else if(time < 36) {
+                img = Sprite.mob_dead1.getFxImage();
+            }
+            else if (time < 70) {
+                img = Sprite.oneal_dead.getFxImage();
+            }
+        } else {
+            handleMove();
+            isDied();
+            countAnimation --;
+            if (x % 32 == 0 && y % 32 == 0 && (collide(BombermanGame.getEntity(x, y + 32))
+                    && collide(BombermanGame.getEntity(x, y - 32)) 
+                    && (collide(BombermanGame.getEntity(x + 32, y))
+                    || collide(BombermanGame.getEntity(x - 32, y))))) {
+                direction = calculateDirection();
+            }
+            if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
+                    || collide(BombermanGame.getEntity(x, y - 32)))
+                    && collide(BombermanGame.getEntity(x + 32, y))
+                    && collide(BombermanGame.getEntity(x - 32, y)))) {
+                direction = calculateDirection();
+            }
+            if (countAnimation == 0) {
+                num++;
+                if (num >= 3) {
+                    num = 0;
+                }
+                countAnimation = 4;
+            }
         }
 	}
 	
-	public void handleMove() {
+	private void isDied() {
+        // TODO Auto-generated method stub
+	    int a = this.getX();
+        int b = this.getY();
+        int size = Sprite.SCALED_SIZE;
+        int nextX_1 = (a / size);
+        int nextY_1 = b / size;
+
+        int nextX_2 = (a + size - 10) / size;
+        int nextY_2 = b / size;
+
+        int nextX_3 = a / size;
+        int nextY_3 = (b + size - 4) / size;
+
+        int nextX_4 = (a + size - 10) / size;
+        int nextY_4 = (b + size - 4) / size; 
+        Entity entity5 = BombermanGame.getExplosion(nextX_1 * size, nextY_1 * size);
+        Entity entity6 = BombermanGame.getExplosion(nextX_2 * size, nextY_2 * size);
+        Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
+        Entity entity8 = BombermanGame.getExplosion(nextX_4 * size, nextY_4 * size);
+        if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
+            remove();
+        }
+    }
+
+    public void handleMove() {
         if (direction == 0) { // right
             if (isCanMove(x + speed , y)) {
                 x += speed;
@@ -157,18 +203,22 @@ public class Oneal extends Entity {
     }
     
     protected int calculateColDirection() {
-        if(player.x < this.x)
-            return 1;
-        else if(player.x > this.x)
-            return 0;
+        if (player != null) {
+            if(player.x < this.x)
+                return 1;
+            else if(player.x > this.x)
+                return 0;
+        }
         return -1;
     }
     
     protected int calculateRowDirection() {
-        if(player.y < this.y)
-            return 2;
-        else if(player.y > this.y)
-            return 3;
+        if (player != null) {
+            if(player.y < this.y)
+                return 2;
+            else if(player.y > this.y)
+                return 3; 
+        }
         return -1;
     }
 }

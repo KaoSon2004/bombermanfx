@@ -23,47 +23,49 @@ public class FlameItem extends Entity{
     public void setFlame() {
         // TODO Auto-generated method stub
         Bomber bomber = (Bomber) BombermanGame.getPlayer();
-        int a = bomber.getX();
-        int b = bomber.getY();
-        int size = Sprite.SCALED_SIZE;
-        int nextX_1 = a / size;
-        int nextY_1 = b / size;
+        if (bomber != null) {
+            int a = bomber.getX();
+            int b = bomber.getY();
+            int size = Sprite.SCALED_SIZE;
+            int nextX_1 = a / size;
+            int nextY_1 = b / size;
 
-        int nextX_2 = (a + size - 10) / size;
-        int nextY_2 = b / size;
+            int nextX_2 = (a + size - 10) / size;
+            int nextY_2 = b / size;
 
-        int nextX_3 = a / size;
-        int nextY_3 = (b + size - 4) / size;
+            int nextX_3 = a / size;
+            int nextY_3 = (b + size - 4) / size;
 
-        int nextX_4 = (a + size - 10) / size;
-        int nextY_4 = (b + size - 4) / size;
-        
-        Entity entity = BombermanGame.getItem(nextX_1 * size, nextY_1 * size);
-        Entity entity2 = BombermanGame.getItem(nextX_2 * size, nextY_2 * size);
-        Entity entity3 = BombermanGame.getItem(nextX_3 * size, nextY_3 * size);
-        Entity entity4 = BombermanGame.getItem(nextX_4 * size, nextY_4 * size);
-        if (entity instanceof FlameItem) {
-            if (entity.equals(this)) {
-                Bomb.upFlameLength();
-                remove();
+            int nextX_4 = (a + size - 10) / size;
+            int nextY_4 = (b + size - 4) / size;
+            
+            Entity entity = BombermanGame.getItem(nextX_1 * size, nextY_1 * size);
+            Entity entity2 = BombermanGame.getItem(nextX_2 * size, nextY_2 * size);
+            Entity entity3 = BombermanGame.getItem(nextX_3 * size, nextY_3 * size);
+            Entity entity4 = BombermanGame.getItem(nextX_4 * size, nextY_4 * size);
+            if (entity instanceof FlameItem) {
+                if (entity.equals(this)) {
+                    Bomb.upFlameLength();
+                    remove();
+                }
             }
-        }
-        else if (entity2 instanceof FlameItem) {
-            if (entity2.equals(this)) {
-                Bomb.upFlameLength();
-                remove();
+            else if (entity2 instanceof FlameItem) {
+                if (entity2.equals(this)) {
+                    Bomb.upFlameLength();
+                    remove();
+                }
             }
-        }
-        else if (entity3 instanceof FlameItem) {
-            if (entity3.equals(this)) {
-                Bomb.upFlameLength();
-                remove();
+            else if (entity3 instanceof FlameItem) {
+                if (entity3.equals(this)) {
+                    Bomb.upFlameLength();
+                    remove();
+                }
             }
-        }
-        else if (entity4 instanceof FlameItem) {
-            if (entity4.equals(this)) {
-                Bomb.upFlameLength();
-                remove();
+            else if (entity4 instanceof FlameItem) {
+                if (entity4.equals(this)) {
+                    Bomb.upFlameLength();
+                    remove();
+                }
             }
         }
     }

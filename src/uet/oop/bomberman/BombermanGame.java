@@ -206,7 +206,6 @@ public class BombermanGame extends Application {
 		}
 		//System.out.println(bomberman.getSpeed());
 		if (!items.isEmpty()) {
-		    System.out.println(items.size());
 		    for (int i = 0; i < items.size(); i++) {
 	            Entity entity = items.get(i);
 	            //System.out.println(i + " " + entity.isRemoved());
@@ -244,13 +243,13 @@ public class BombermanGame extends Application {
             items.forEach(g -> g.render(gc));
         }
         portal.render(gc);
+        if (bombs != null) {
+            bombs.forEach(g -> g.render(gc));
+        }
+        if (!explosions.isEmpty()) {
+            explosions.forEach(g -> g.render(gc));
+        }
         entities.forEach(g -> g.render(gc));
-		if (bombs != null) {
-			bombs.forEach(g -> g.render(gc));
-		}
-		if (!explosions.isEmpty()) {
-			explosions.forEach(g -> g.render(gc));
-		}
     }
     
     // get entity
