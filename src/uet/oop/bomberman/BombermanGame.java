@@ -4,13 +4,14 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomb;
@@ -28,17 +29,12 @@ import uet.oop.bomberman.graphics.Sprite;
 import Menu.Menu;
 import Menu.MenuButton;
 import Menu.scoreScreen;
-
 import java.awt.Label;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.RootPaneContainer;
-
-
 
 public class BombermanGame extends Application {
     
@@ -56,6 +52,10 @@ public class BombermanGame extends Application {
 	private static Portal portal;
 	public static int numBomb = 1;
 	public static int score = 0;
+	private Image image = new Image("Menu/resource/MicrosoftTeams-image.png", Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT, false, true);
+	private ImageView imageView = new ImageView(image);
+	private MenuButton playAgain = new MenuButton("Play Again");
+	private MenuButton menuButton = new MenuButton("Menu");
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -63,13 +63,28 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
-        VBox root = new VBox();
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Label scoreLabel = new Label("Score: " + score);        
+        Label scoreLabel = new Label("Score: " + score);    
+        imageView.setVisible(false);
+        playAgain.setVisible(false);
+        menuButton.setVisible(false);
         canvas.requestFocus();
         canvas.setFocusTraversable(true);
+        playAgain.setLayoutX(Sprite.SCALED_SIZE * WIDTH / 2 - 95);
+        playAgain.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 - 45);
+        menuButton.setLayoutX(Sprite.SCALED_SIZE * WIDTH / 2 - 95);
+        menuButton.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 + 45);
+        
+        playAgain.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                playAgain();
+            }
+        });
         // xử lí khi nhấn phím
         canvas.setOnKeyPressed(( KeyEvent event ) -> {
             if (event.getCode() == KeyCode.D) {
@@ -111,15 +126,31 @@ public class BombermanGame extends Application {
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+		        AnchorPane root = new AnchorPane();
 		        root.getChildren().add(canvas);
-		        Scene scene = new Scene(root);
-		        Stage gameStage = new Stage();
-		        gameStage.setScene(scene);
+		        root.getChildren().addAll(imageView, playAgain, menuButton);
+		        Scene scene = new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+		        //Stage gameStage = new Stage();
+		        stage.setScene(scene);
 		        menuStage.hide();
-		        gameStage.show();
+		        stage.show();
 			}
 		});
 		menuStage.show();
+        
+        menuButton.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                playAgain();
+                stage.hide();
+                menuStage.show();
+                
+            }
+            
+        });
+        
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
@@ -141,6 +172,8 @@ public class BombermanGame extends Application {
     	entities.clear();
     	stillObjects.clear();
     	items.clear();
+    	explosions.clear();
+    	bombs.clear();
     	canvas.setDisable(false);
 		FileReader fileReader = new FileReader("res/levels/Level" + level + ".txt");
 		BufferedReader buf = new BufferedReader(fileReader);
@@ -202,13 +235,12 @@ public class BombermanGame extends Application {
     public void update() {
     	if(bomberman.isRemoved()) {
     		System.out.println("Died");
-    		//canvas.setDisable(true);
-    		try {
-				createMap();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+    		canvas.setDisable(true);
+    		if (!entities.contains(bomberman)) {
+    		      imageView.setVisible(true);
+    		      playAgain.setVisible(true);
+    		      menuButton.setVisible(true);
+    		}
     	}
     	if(nextLevel() == true && ((bomberman.getX() / 32) * 32) == portal.getX() 
     			&& ((bomberman.getY() / 32) * 32) == portal.getY()) {
@@ -307,6 +339,7 @@ public class BombermanGame extends Application {
     public static List<Entity> getExplosions() {
     	return explosions;
     }
+    
     public static Entity getItem(int x, int y) {
         if (!items.isEmpty()) {
             for (int i = 0; i < items.size(); i++) {
@@ -330,6 +363,7 @@ public class BombermanGame extends Application {
         }
         return null;
     }
+    
     public static Entity getBomb(int x, int y) {
         if (bombs != null) {
             for (int i = 0; i < bombs.size(); i++) {
@@ -341,6 +375,7 @@ public class BombermanGame extends Application {
         }
         return null;
     }
+    
     public static boolean nextLevel() {
     	for(Entity entity : entities) {
     		if(entity instanceof Balloon || entity instanceof Oneal) {
@@ -351,6 +386,20 @@ public class BombermanGame extends Application {
     	return true;
     }
     
-
+    public void playAgain() {
+        bomberman = null;
+        numBomb = 1;
+        Bomb.setFlameLength(0);
+        try {
+            createMap();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        imageView.setVisible(false);
+        playAgain.setVisible(false);
+        menuButton.setVisible(false);
+    }
+    
     
 }

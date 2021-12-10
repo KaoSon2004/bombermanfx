@@ -177,37 +177,39 @@ public class Bomb extends Entity{
 	
 	public void setInBomb() {
 	    Bomber bomber = (Bomber) BombermanGame.getPlayer();
-        int a = bomber.getX();
-        int b = bomber.getY();
-        int size = Sprite.SCALED_SIZE;
-        int nextX_1 = a / size;
-        int nextY_1 = b / size;
+	    if (bomber != null) {
+	        int a = bomber.getX();
+	        int b = bomber.getY();
+	        int size = Sprite.SCALED_SIZE;
+	        int nextX_1 = a / size;
+	        int nextY_1 = b / size;
 
-        int nextX_2 = (a + size - 10) / size;
-        int nextY_2 = b / size;
+	        int nextX_2 = (a + size - 10) / size;
+	        int nextY_2 = b / size;
 
-        int nextX_3 = a / size;
-        int nextY_3 = (b + size - 4) / size;
+	        int nextX_3 = a / size;
+	        int nextY_3 = (b + size - 4) / size;
 
-        int nextX_4 = (a + size - 10) / size;
-        int nextY_4 = (b + size - 4) / size;
-        
-        Entity entity = BombermanGame.getBomb(nextX_1 * size, nextY_1 * size);
-        Entity entity2 = BombermanGame.getBomb(nextX_2 * size, nextY_2 * size);
-        Entity entity3 = BombermanGame.getBomb(nextX_3 * size, nextY_3 * size);
-        Entity entity4 = BombermanGame.getBomb(nextX_4 * size, nextY_4 * size);        
-        if ((entity instanceof Bomb)
-                || (entity2 instanceof Bomb)
-                || (entity3 instanceof Bomb)
-                || (entity4 instanceof Bomb)) {
-          //  inBomb = false;
-        } else {
-            inBomb = false;
-        }
+	        int nextX_4 = (a + size - 10) / size;
+	        int nextY_4 = (b + size - 4) / size;
+	        
+	        Entity entity = BombermanGame.getBomb(nextX_1 * size, nextY_1 * size);
+	        Entity entity2 = BombermanGame.getBomb(nextX_2 * size, nextY_2 * size);
+	        Entity entity3 = BombermanGame.getBomb(nextX_3 * size, nextY_3 * size);
+	        Entity entity4 = BombermanGame.getBomb(nextX_4 * size, nextY_4 * size);        
+	        if ((entity instanceof Bomb)
+	                || (entity2 instanceof Bomb)
+	                || (entity3 instanceof Bomb)
+	                || (entity4 instanceof Bomb)) {
+	          //  inBomb = false;
+	        } else {
+	            inBomb = false;
+	        }
+	    }
     }
 	
-	public static int getFlameLength() {
-	    return length;
+	public static void setFlameLength(int l) {
+	    length = l;
 	}
 	
 	public static void upFlameLength() {
