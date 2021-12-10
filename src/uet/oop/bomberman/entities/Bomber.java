@@ -14,7 +14,6 @@ public class Bomber extends Entity {
     private boolean directionLeft = false;
     private boolean directionRight = false;
     private int speed = Sprite.SCALED_SIZE / 16;
-
     public Bomber(int x, int y, Image img) {
         super( x, y, img);
     }
@@ -184,6 +183,7 @@ public class Bomber extends Entity {
         Entity entity2 = BombermanGame.getEntity(nextX_2 * size, nextY_2 * size);
         Entity entity3 = BombermanGame.getEntity(nextX_3 * size, nextY_3 * size);
         Entity entity4 = BombermanGame.getEntity(nextX_4 * size, nextY_4 * size);
+
         return collide(entity4) && collide(entity3) && collide(entity2) && collide(entity);
     }
     
@@ -230,4 +230,6 @@ public class Bomber extends Entity {
         	remove();
         }  
     }
+    
+
 }

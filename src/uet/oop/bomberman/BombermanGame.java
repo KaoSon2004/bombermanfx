@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -26,12 +27,16 @@ import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 import Menu.Menu;
 import Menu.MenuButton;
+import Menu.scoreScreen;
 
+import java.awt.Label;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.RootPaneContainer;
 
 
 
@@ -50,6 +55,7 @@ public class BombermanGame extends Application {
 	private Bomber bomberman;
 	private static Portal portal;
 	public static int numBomb = 1;
+	public static int score = 0;
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -61,6 +67,7 @@ public class BombermanGame extends Application {
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
+        Label scoreLabel = new Label("Score: " + score);        
         canvas.requestFocus();
         canvas.setFocusTraversable(true);
         // xử lí khi nhấn phím
@@ -195,7 +202,22 @@ public class BombermanGame extends Application {
     public void update() {
     	if(bomberman.isRemoved()) {
     		System.out.println("Died");
-    		canvas.setDisable(true);
+    		//canvas.setDisable(true);
+    		try {
+				createMap();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	}
+    	if(nextLevel() == true && ((bomberman.getX() / 32) * 32) == portal.getX() 
+    			&& ((bomberman.getY() / 32) * 32) == portal.getY()) {
+    		try {
+				createMap();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
     	}
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
@@ -325,8 +347,10 @@ public class BombermanGame extends Application {
     			return false;
     		}
     	}
-    	level ++;
+    	level = 2;
     	return true;
     }
+    
+
     
 }
