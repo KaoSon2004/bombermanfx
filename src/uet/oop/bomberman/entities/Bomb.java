@@ -44,6 +44,9 @@ public class Bomb extends Entity{
 	}
 	private void bombExplode() {
 		for(int i = 1; i <= length + 1; i++) {
+			if(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Wall) {
+				break;
+			}
 			if(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Brick) {
 				BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y)).remove();
 				break;
@@ -51,23 +54,39 @@ public class Bomb extends Entity{
 		}
 		
 		for(int i = 1; i <= length + 1; i++) {
+			if(BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE) , (y) ) instanceof Wall) {
+				break;
+			}
 			if(BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE) , (y) ) instanceof Brick) {
 				BombermanGame.getEntity((x + i * Sprite.SCALED_SIZE) , (y)).remove();
 				break;
 			}
 		}
 		for(int i = 1; i <= length + 1; i++) {
+			if(BombermanGame.getEntity((x ) , (y- i * Sprite.SCALED_SIZE) ) instanceof Wall) {
+				break;
+			}
 			if(BombermanGame.getEntity((x ) , (y- i * Sprite.SCALED_SIZE) ) instanceof Brick) {
 				BombermanGame.getEntity((x ) , (y- i * Sprite.SCALED_SIZE)).remove();
 				break;
 			}
 		}
 		for(int i = 1; i <= length + 1; i++) {
+			if(BombermanGame.getEntity((x ) , (y + i * Sprite.SCALED_SIZE) ) instanceof Wall) {
+				break;
+			}
 			if(BombermanGame.getEntity((x ) , (y + i * Sprite.SCALED_SIZE) ) instanceof Brick) {
 				BombermanGame.getEntity((x ) , (y +  i * Sprite.SCALED_SIZE)).remove();
 				break;
 			}
 		}
+//		for(int i = 0; i < BombermanGame.getExplosions().size(); i++) {
+//			if (BombermanGame.getEntity(BombermanGame.getExplosions().get(i).getX()
+//					, BombermanGame.getExplosions().get(i).getY()) instanceof Brick) {
+//				BombermanGame.getEntity(BombermanGame.getExplosions().get(i).getX()
+//						, BombermanGame.getExplosions().get(i).getY()).remove();
+//			}
+//		}
 		
 	}
 
