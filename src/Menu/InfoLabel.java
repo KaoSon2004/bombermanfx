@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 public class InfoLabel extends Label {
-	public final static String FONT_PATH = "src/Menu.resource/kenvector_future.ttf";
+	public final static String FONT_PATH = "src/Menu.resource/PixelEmulator-xq08.ttf";
 	
 	public InfoLabel(String text) {
 		setPrefWidth(600);

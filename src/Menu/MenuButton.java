@@ -10,7 +10,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
 public class MenuButton extends Button {
-	private String font = "src\\Menu\\resource\\kenvector_future.ttf";
+	private String font = "src\\Menu\\resource\\PixelEmulator-xq08.ttf";
 	private final String ButtonFreeStyle = "-fx-background-color: transparent; -fx-background-image: "
 			+ "url('Menu/resource/blue_button00.jpg');";
 	private final String ButtonPressStyle = "-fx-background-color: transparent; -fx-background-image: "
