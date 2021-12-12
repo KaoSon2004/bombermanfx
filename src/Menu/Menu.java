@@ -148,8 +148,25 @@ public class Menu {
 	private void createScoreSubScene() {
 		scoreSubScene = new MenuSubScene();
 		menuPane.getChildren().add(scoreSubScene);
+		
+		
+		InfoLabel banner = new InfoLabel("HIGH SCORE");
+		banner.setLayoutX(120);
+		banner.setLayoutY(-120);
+		scoreSubScene.getPane().getChildren().add(banner);
+		
+		for (int i = 0; i < 10; i++) {
+			InfoLabel scoreOut = new InfoLabel(scoreScreen.highScore[i]);
+			scoreOut.setLayoutX(120);
+			scoreOut.setLayoutY(-80 + 20*i);
+			scoreSubScene.getPane().getChildren().add(scoreOut);
+		}
 	}
-
+	
+	public String toString(int i) {
+		return "i";
+	}
+	
 	private void createHelpSubScene() {
 		helpSubScene = new MenuSubScene();
 		menuPane.getChildren().add(helpSubScene);

@@ -20,6 +20,15 @@ public class InfoLabel extends Label {
 		setLabelFont();
 	}
 	
+	public InfoLabel(int number) {
+		setPrefWidth(600);
+		setPrefHeight(400);
+		setPadding(new Insets(40, 40, 40, 40));
+		setText(String.valueOf(number));
+		setWrapText(true);
+		setLabelFont();
+	}
+	
 	private void setLabelFont() {
 		try {
 			setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));
