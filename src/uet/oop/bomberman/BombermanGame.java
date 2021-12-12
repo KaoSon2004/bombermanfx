@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    private double xOffset = 0;
+    private double yOffset = 0;
     public static final int WIDTH = 31;
     public static final int HEIGHT = 18;
     private String font = "src\\Menu\\resource\\RUBBBB__.ttf";
@@ -79,11 +81,15 @@ public class BombermanGame extends Application {
 	private GameButton quitButton = new GameButton("/Menu/resource/gameButton.png","QUIT");
 	private GameButton pauseGameButton = new GameButton("/Menu/resource/pause.png", "");
 	private GameButton continueGameButton = new GameButton("/Menu/resource/gameButton.png", "CONTINUE");
+	private GameButton audioButton = new GameButton("/Menu/resource/audioOn.png", "");
+	private GameButton soundButton = new GameButton("/Menu/resource/soundOn.png", "");
 	private Label timeCountLabel = new Label("Time: " + second);
 	private Label bombCountLabel = new Label("" + numBomb);
 	private Label flameCountLabel = new Label("" + Bomb.getFlameLength());
 	private Label speedCountLabel = new Label("" + 0);
 	private Label scorelLabel = new Label("SCORE");
+	private boolean isPlayMusic = true;
+	private boolean isPlaySound = true;
 
 	//load clock png
 	Image clockImage = new Image("Menu/resource/imgbin_pixel-art-drawing-png.png", 32, 32, false, true);
@@ -205,6 +211,23 @@ public class BombermanGame extends Application {
 		        //Stage gameStage = new Stage();
 		        stage.setScene(scene);
 		        menuStage.hide();
+		        stage.initStyle(StageStyle.UNDECORATED);
+		        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
+		            @Override
+		            public void handle(MouseEvent event) {
+		                xOffset = event.getSceneX();
+		                yOffset = event.getSceneY();
+		            }
+		        });
+		            
+		        //move around here
+		        scene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		            @Override
+		            public void handle(MouseEvent event) {
+		                stage.setX(event.getScreenX() - xOffset);
+		                stage.setY(event.getScreenY() - yOffset);
+		            }
+		        });
 		        stage.show();
 		        timer.start();
 			}
@@ -262,6 +285,36 @@ public class BombermanGame extends Application {
                 timer.start();
                 pauseSubScreen.moveSubScene();
                 pauseGameButton.setDisable(false);
+            }
+        });
+        
+        audioButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                // TODO Auto-generated method stub
+                if (isPlayMusic) {
+                    isPlayMusic = false;
+                    audioButton.setImage("/Menu/resource/audioOff.png");
+                } else {
+                    isPlayMusic = true;
+                    audioButton.setImage("/Menu/resource/audioOn.png");
+                }
+            }
+        });
+        
+        soundButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                // TODO Auto-generated method stub
+                if (isPlaySound) {
+                    isPlaySound = false;
+                    soundButton.setImage("/Menu/resource/soundOff.png");
+                } else {
+                    isPlaySound = true;
+                    soundButton.setImage("/Menu/resource/soundOn.png");
+                }
             }
         });
         
@@ -630,11 +683,20 @@ public class BombermanGame extends Application {
         }
         pauseTextLabel.setLayoutX(pauseSubScreen.getWidth() / 2 - 24);
         pauseTextLabel.setLayoutY(5);
-        pauseSubScreen.getPane().getChildren().addAll(pauseTextLabel, continueGameButton, quitButton);
+        pauseSubScreen.getPane().getChildren().addAll(pauseTextLabel, continueGameButton, quitButton, soundButton, audioButton);
         continueGameButton.setLayoutY(40);
         continueGameButton.setLayoutX((pauseSubScreen.getWidth() - continueGameButton.getPrefWidth()) / 2);
+        
         quitButton.setLayoutX((pauseSubScreen.getWidth() - continueGameButton.getPrefWidth()) / 2);
         quitButton.setLayoutY(95);
+        
+        soundButton.setPrefWidth(50);
+        soundButton.setLayoutX((pauseSubScreen.getWidth() - soundButton.getPrefWidth()) / 2);
+        soundButton.setLayoutY(135);
+        
+        audioButton.setPrefWidth(50);
+        audioButton.setLayoutX((pauseSubScreen.getWidth() - audioButton.getPrefWidth()) / 2);
+        audioButton.setLayoutY(185);
     }
     
 }

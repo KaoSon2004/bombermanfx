@@ -50,15 +50,15 @@ public class Oneal extends Entity {
                     && collide(BombermanGame.getEntity(x, y - 32)) 
                     && (collide(BombermanGame.getEntity(x + 32, y))
                     || collide(BombermanGame.getEntity(x - 32, y))))) {
-                //direction = calculateDirection();
-                direction = random.nextInt(4);
+                direction = calculateDirection();
+                //direction = random.nextInt(4);
             }
             if (x % 32 == 0 && y % 32 == 0 && ((collide(BombermanGame.getEntity(x, y + 32))
                     || collide(BombermanGame.getEntity(x, y - 32)))
                     && collide(BombermanGame.getEntity(x + 32, y))
                     && collide(BombermanGame.getEntity(x - 32, y)))) {
-                //direction = calculateDirection();
-                direction = random.nextInt(4);
+                direction = calculateDirection();
+               // direction = random.nextInt(4);
             }
             if (countAnimation == 0) {
                 num++;

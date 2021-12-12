@@ -12,6 +12,7 @@ import javafx.scene.text.Font;
 
 public class GameButton extends Button{
     
+    
     private String font = "src\\Menu\\resource\\OXYGENE1.ttf";
     
     public GameButton(String path, String text) {
@@ -95,5 +96,7 @@ public class GameButton extends Button{
         setPrefHeight(height);
     }
     
-    
+    public void setImage(String path) {
+        setStyle("-fx-background-color: transparent; -fx-background-image: url('" + path + "');");
+    }
 }

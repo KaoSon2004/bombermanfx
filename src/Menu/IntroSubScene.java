@@ -98,7 +98,7 @@ public class IntroSubScene extends SubScene {
                 if (isDisappear == false) {
                     FadeTransition fade = new FadeTransition();  
                     //setting the duration for the Fade transition   
-                    fade.setDuration(Duration.millis(5000));
+                    fade.setDuration(Duration.millis(2000));
                     fade.setFromValue(10);  
                     fade.setToValue(0);
                     fade.setNode(getPane());
