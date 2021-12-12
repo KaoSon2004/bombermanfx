@@ -17,8 +17,11 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Menu {
+    private double xOffset = 0;
+    private double yOffset = 0;
 	private AnchorPane menuPane;
 	private Scene menuScene;
 	private Stage menuStage;
@@ -32,12 +35,14 @@ public class Menu {
 	private IntroSubScene introSubScene;
 	private boolean isStarted;
 	MenuButton startButton;
+	List<InfoLabel> scoreLabels = new ArrayList<>();
 	
 	public Stage getMenuStage() {
 		return menuStage;
 	}
 
 	public Menu() {
+	    scoreScreen.insertFromFile();
 	    introSubScene = new IntroSubScene();
 		isStarted = false;
 		menuPane = new AnchorPane();
@@ -48,6 +53,23 @@ public class Menu {
 		createButton();
 		createSubScene();
 	    menuPane.getChildren().add(introSubScene);
+	    menuStage.initStyle(StageStyle.UNDECORATED);
+        menuScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                xOffset = event.getSceneX();
+                yOffset = event.getSceneY();
+            }
+        });
+            
+        //move around here
+        menuScene.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                menuStage.setX(event.getScreenX() - xOffset);
+                menuStage.setY(event.getScreenY() - yOffset);
+            }
+        });
 	}
 
 	private void createButton() {
@@ -81,6 +103,7 @@ public class Menu {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+			    scoreScreen.exportToFile();
 				menuStage.close();
 			}
 		});
@@ -148,7 +171,7 @@ public class Menu {
 		createCreditSubScene();
 	}
 
-	private void createScoreSubScene() {
+	public void createScoreSubScene() {
 		scoreSubScene = new MenuSubScene();
 		menuPane.getChildren().add(scoreSubScene);
 		
@@ -163,7 +186,14 @@ public class Menu {
 			scoreOut.setLayoutX(120);
 			scoreOut.setLayoutY(-80 + 20*i);
 			scoreSubScene.getPane().getChildren().add(scoreOut);
+			scoreLabels.add(scoreOut);
 		}
+	}
+	
+	public void setScore() {
+	    for (int i = 0; i < scoreLabels.size(); i++) {
+	        scoreLabels.get(i).setText(scoreScreen.highScore[i] + "");
+	    }
 	}
 	
 	public String toString(int i) {

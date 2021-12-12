@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
@@ -151,6 +152,7 @@ public class BombermanGame extends Application {
 		Menu menu = new Menu();
 		MenuButton startButton = menu.getStartButton();
 		Stage menuStage = menu.getMenuStage();
+		
 		AnimationTimer timer = new AnimationTimer() {
             long lastTime = 0;
 
@@ -182,6 +184,8 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+                scoreScreen.updateScore();
+                menu.setScore();
                 playAgain();
             }
         });
@@ -212,6 +216,8 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+                scoreScreen.updateScore();
+                menu.setScore();
                 playAgain();
                 stage.hide();
                 timer.stop();
@@ -226,6 +232,8 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+                scoreScreen.updateScore();
+                menu.setScore();
                 pauseSubScreen.moveSubScene();
                 pauseGameButton.setDisable(false);
                 playAgain();

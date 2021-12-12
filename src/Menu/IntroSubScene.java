@@ -90,27 +90,30 @@ public class IntroSubScene extends SubScene {
             e.printStackTrace();
         }
         logoImageView.setLayoutY(-logoImageView.getFitHeight());
-        this.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        getPane().setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent arg0) {
                 // TODO Auto-generated method stub
-                FadeTransition fade = new FadeTransition();  
-                //setting the duration for the Fade transition   
-                fade.setDuration(Duration.millis(5000));
-                fade.setFromValue(10);  
-                fade.setToValue(0);
-                fade.setNode(getPane());
-                fade.play(); 
-                fade.setOnFinished(new EventHandler<ActionEvent>() {
+                if (isDisappear == false) {
+                    FadeTransition fade = new FadeTransition();  
+                    //setting the duration for the Fade transition   
+                    fade.setDuration(Duration.millis(5000));
+                    fade.setFromValue(10);  
+                    fade.setToValue(0);
+                    fade.setNode(getPane());
+                    fade.play(); 
+                    isDisappear = true;
+                    fade.setOnFinished(new EventHandler<ActionEvent>() {
 
-                    @Override
-                    public void handle(ActionEvent arg0) {
-                        // TODO Auto-generated method stub
-                        isDisappear = true;
-                        getPane().setVisible(false);
-                    }
-                });
+                        @Override
+                        public void handle(ActionEvent arg0) {
+                            // TODO Auto-generated method stub
+                            
+                            getPane().setVisible(false);
+                        }
+                    });
+                }
             }
         });
         AnimationTimer animationTimer = new AnimationTimer() {
