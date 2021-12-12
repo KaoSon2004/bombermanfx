@@ -29,6 +29,7 @@ public class Menu {
 	private MenuSubScene creditSubScene;
 	private MenuSubScene exitSubScene;
 	private MenuSubScene currentSubScene;
+	private IntroSubScene introSubScene;
 	private boolean isStarted;
 	MenuButton startButton;
 	
@@ -37,6 +38,7 @@ public class Menu {
 	}
 
 	public Menu() {
+	    introSubScene = new IntroSubScene();
 		isStarted = false;
 		menuPane = new AnchorPane();
 		menuScene = new Scene(menuPane, deConfig.screenWidth, deConfig.screenHeight);
@@ -45,6 +47,7 @@ public class Menu {
 		createBackGround();
 		createButton();
 		createSubScene();
+	    menuPane.getChildren().add(introSubScene);
 	}
 
 	private void createButton() {
