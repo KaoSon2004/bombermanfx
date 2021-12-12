@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
 
 import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
@@ -26,9 +25,9 @@ public class Doll extends Entity {
     private int num = 0;
     public static int maze[][];
     public int sol[][];
-    public static List <Integer> path = new ArrayList<>();
+    public List <Integer> path = new ArrayList<>();
     public static boolean visited[][];
-    public static boolean found;
+    public boolean found;
     private Random random = new Random();
 	int col = -1;
 	int row = -1;
