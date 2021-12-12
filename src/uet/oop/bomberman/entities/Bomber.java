@@ -51,6 +51,9 @@ public class Bomber extends Entity {
             if (!directionDown && !directionLeft && !directionRight && !directionUp) {
                 img = Sprite.player_down.getFxImage();
             }
+            if (timeSpeed <= 0) {
+                speed = 2;
+            }
         }
     }
     

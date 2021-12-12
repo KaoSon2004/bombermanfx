@@ -28,6 +28,7 @@ public class Brick extends Entity {
 			} else {
 	             img = Sprite.brick_exploded.getFxImage();
 			}
+			BombermanGame.maze[y / Sprite.SCALED_SIZE][x / Sprite.SCALED_SIZE] = 0;
 		}
 		
 	}

@@ -21,6 +21,7 @@ import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Brick;
+import uet.oop.bomberman.entities.Doll;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Oneal;
@@ -58,6 +59,7 @@ public class BombermanGame extends Application {
     private static List<Entity> bombs = new ArrayList<>();
 	private Bomber bomberman;
 	private static Portal portal;
+	public static int maze[][] = new int[18][31];
 	public static int numBomb = 1;
 	public static int score = 0;
 	private int second = 300;
@@ -315,6 +317,10 @@ public class BombermanGame extends Application {
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
                     //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
+				else if(line.charAt(i) == 'd') {
+				    entities.add(new Doll(i, rowCount, Sprite.doll_left1.getFxImage()));
+				    stillObjects.add(new Grass(i, rowCount, Sprite.grass.getFxImage()));
+				    }
 				else if(line.charAt(i) == 'b') {
                     items.add(new BombItem(i , rowCount , Sprite.powerup_bombs.getFxImage()));
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
@@ -352,6 +358,21 @@ public class BombermanGame extends Application {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+    	}
+    	for(int i = 0; i < stillObjects.size(); i++) {
+    	    Entity entity = stillObjects.get(i);
+    	    if(entity instanceof Wall) {
+    	        maze[entity.getY() / Sprite.SCALED_SIZE][entity.getX() / Sprite.SCALED_SIZE] = 1;
+    	    }
+    	}
+    	for (int i = 0; i < entities.size(); i++) {
+    	    Entity entity = entities.get(i);
+    	    // if (entity.isRemoved()) {
+    	    // entities.remove(i);
+    	    // }
+    	    if(entity instanceof Brick) {
+    	        maze[entity.getY() / Sprite.SCALED_SIZE][entity.getX() / Sprite.SCALED_SIZE] = 1;
+    	    }
     	}
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
