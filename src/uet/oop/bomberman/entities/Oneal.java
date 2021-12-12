@@ -91,6 +91,7 @@ public class Oneal extends Entity {
         Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
         Entity entity8 = BombermanGame.getExplosion(nextX_4 * size, nextY_4 * size);
         if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
+            BombermanGame.score += 150;
             remove();
         }
     }

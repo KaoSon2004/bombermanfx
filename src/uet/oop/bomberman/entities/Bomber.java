@@ -8,6 +8,7 @@ import uet.oop.bomberman.graphics.Sprite;
 public class Bomber extends Entity {
     private int count = 4;
     private int num = 0;
+    private static int timeSpeed = 0;
     // các hướng di chuyển
     private boolean directionUp = false;
     private boolean directionDown = false;
@@ -201,7 +202,10 @@ public class Bomber extends Entity {
     }
     
     public void setSpeed(int speed) {
-        this.speed = speed;
+        if (timeSpeed == 0) {
+            this.speed = speed;
+        }
+        setTimeSpeed(timeSpeed + 10);
     }
 
     public int getSpeed() {
@@ -231,5 +235,11 @@ public class Bomber extends Entity {
         }  
     }
     
-
+    public static void setTimeSpeed(int time) {
+        timeSpeed = time;
+    }
+    
+    public static int getTimeSpeed() {
+        return timeSpeed;
+    }
 }

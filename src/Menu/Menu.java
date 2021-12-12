@@ -100,7 +100,7 @@ public class Menu {
 
 	private void createScoreButton() {
 		// TODO Auto-generated method stub
-		MenuButton menuButton = new MenuButton("Scorce");
+		MenuButton menuButton = new MenuButton("Score");
 		menuButton.setOnAction(new EventHandler<ActionEvent>() {
 			
 			@Override

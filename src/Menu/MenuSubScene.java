@@ -11,7 +11,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.util.Duration;
 
 public class MenuSubScene extends SubScene {
-	private String font = "src\\Menu\\resource\\kenvector_future.ttf";
+	private String font = "src\\Menu\\resource\\PixelEmulator-xq08.ttf";
 	private String imageString = "Menu/resource/blue_panel.png";
 	private boolean isHiden;
 

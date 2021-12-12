@@ -7,11 +7,15 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomb;
@@ -22,24 +26,28 @@ import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Oneal;
 import uet.oop.bomberman.entities.Portal;
 import uet.oop.bomberman.entities.Wall;
+import uet.oop.bomberman.entities.Explosion.Explosion;
 import uet.oop.bomberman.entities.items.BombItem;
 import uet.oop.bomberman.entities.items.FlameItem;
 import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
+import Menu.GameButton;
 import Menu.Menu;
 import Menu.MenuButton;
+import Menu.PauseSubScreen;
 import Menu.scoreScreen;
-import java.awt.Label;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
-    
     public static final int WIDTH = 31;
     public static final int HEIGHT = 18;
+    private String font = "src\\Menu\\resource\\RUBBBB__.ttf";
     public static int level = 1;
     private GraphicsContext gc;
     private Canvas canvas;
@@ -52,10 +60,37 @@ public class BombermanGame extends Application {
 	private static Portal portal;
 	public static int numBomb = 1;
 	public static int score = 0;
-	private Image image = new Image("Menu/resource/MicrosoftTeams-image.png", Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT, false, true);
+	private int second = 300;
+	//create pause subScreen
+	private PauseSubScreen pauseSubScreen = new PauseSubScreen();
+	//load logo img
+	private Image logoImage = new Image("Menu/resource/logo.png");
+	private ImageView logoImageView = new ImageView(logoImage);
+	
+	//load bomber death
+	private Image image = new Image("Menu/resource/maxresdefault.jpg", Sprite.SCALED_SIZE * WIDTH + 128, Sprite.SCALED_SIZE * HEIGHT, false, true);
 	private ImageView imageView = new ImageView(image);
+	
 	private MenuButton playAgain = new MenuButton("Play Again");
 	private MenuButton menuButton = new MenuButton("Menu");
+	private GameButton quitButton = new GameButton("/Menu/resource/gameButton.png","QUIT");
+	private GameButton pauseGameButton = new GameButton("/Menu/resource/pause.png", "");
+	private GameButton continueGameButton = new GameButton("/Menu/resource/gameButton.png", "CONTINUE");
+	private Label timeCountLabel = new Label("Time: " + second);
+	private Label bombCountLabel = new Label("" + numBomb);
+	private Label flameCountLabel = new Label("" + Bomb.getFlameLength());
+	private Label speedCountLabel = new Label("" + 0);
+	private Label scorelLabel = new Label("SCORE");
+
+	//load clock png
+	Image clockImage = new Image("Menu/resource/imgbin_pixel-art-drawing-png.png", 32, 32, false, true);
+    ImageView clockImageView = new ImageView(clockImage);
+    //load bomb item png
+    ImageView bombCountView = new ImageView(Sprite.powerup_bombpass.getFxImage());
+    //load flame item png
+    ImageView flameCountView = new ImageView(Sprite.powerup_flamepass.getFxImage());
+    //load speed item png
+    ImageView speedCountView = new ImageView(Sprite.powerup_speed.getFxImage());
 
     public static void main(String[] args) {
         Application.launch(BombermanGame.class);
@@ -63,28 +98,19 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        playAgain.setTextFill(Color.RED);
+        menuButton.setTextFill(Color.RED);
         // Tao Canvas
         canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
         gc = canvas.getGraphicsContext2D();
-        Label scoreLabel = new Label("Score: " + score);    
+        //create time counting
+        createLabel();
         imageView.setVisible(false);
         playAgain.setVisible(false);
         menuButton.setVisible(false);
         canvas.requestFocus();
         canvas.setFocusTraversable(true);
-        playAgain.setLayoutX(Sprite.SCALED_SIZE * WIDTH / 2 - 95);
-        playAgain.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 - 45);
-        menuButton.setLayoutX(Sprite.SCALED_SIZE * WIDTH / 2 - 95);
-        menuButton.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 + 45);
-        
-        playAgain.setOnAction(new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent arg0) {
-                // TODO Auto-generated method stub
-                playAgain();
-            }
-        });
+        canvas.addEventFilter(MouseEvent.ANY, (e) -> canvas.requestFocus());
         // xử lí khi nhấn phím
         canvas.setOnKeyPressed(( KeyEvent event ) -> {
             if (event.getCode() == KeyCode.D) {
@@ -123,20 +149,61 @@ public class BombermanGame extends Application {
 		Menu menu = new Menu();
 		MenuButton startButton = menu.getStartButton();
 		Stage menuStage = menu.getMenuStage();
+		AnimationTimer timer = new AnimationTimer() {
+            long lastTime = 0;
+
+            @Override
+            public void handle(long l) {
+                render();
+                update();
+                if (lastTime != 0) {
+                    if (l > lastTime + 1_000_000_000 && second > 0) {
+                        if (second > 0) {
+                            second--;
+                            timeCountLabel.setText("Time: " + second);
+                        }
+                        if (Bomber.getTimeSpeed() > 0) {
+                            Bomber.setTimeSpeed(Bomber.getTimeSpeed() - 1);
+                        }
+                        lastTime = l;
+
+                    }
+                    
+                } else {
+                    lastTime = l;
+                }
+            }
+        };
+        
+        playAgain.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                playAgain();
+            }
+        });
+        
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 		        AnchorPane root = new AnchorPane();
+		        root.setStyle("-fx-background-color: green");
 		        root.getChildren().add(canvas);
-		        root.getChildren().addAll(imageView, playAgain, menuButton);
-		        Scene scene = new Scene(root, Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+		        root.getChildren().addAll(timeCountLabel, clockImageView, bombCountView, bombCountLabel, flameCountView, 
+		                flameCountLabel, speedCountLabel, speedCountView, logoImageView, scorelLabel, pauseGameButton, pauseSubScreen,
+		                imageView, playAgain, menuButton);
+		        Scene scene = new Scene(root, Sprite.SCALED_SIZE * WIDTH + 128, Sprite.SCALED_SIZE * HEIGHT);
+		     // xử lí khi nhấn phím
+		        
 		        //Stage gameStage = new Stage();
 		        stage.setScene(scene);
 		        menuStage.hide();
 		        stage.show();
+		        timer.start();
 			}
 		});
-		menuStage.show();
+		
         
         menuButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -145,27 +212,58 @@ public class BombermanGame extends Application {
                 // TODO Auto-generated method stub
                 playAgain();
                 stage.hide();
+                timer.stop();
                 menuStage.show();
                 
             }
             
         });
         
-        AnimationTimer timer = new AnimationTimer() {
+        quitButton.setOnAction(new EventHandler<ActionEvent>() {
+
             @Override
-            public void handle(long l) {
-                render();
-                update();
+            public void handle(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                pauseSubScreen.moveSubScene();
+                pauseGameButton.setDisable(false);
+                playAgain();
+                stage.hide();
+                timer.stop();
+                menuStage.show();
             }
-        };
-        timer.start();
+        });
+        
+        pauseGameButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                // TODO Auto-generated method stub
+                timer.stop();
+                pauseSubScreen.moveSubScene();
+                pauseGameButton.setDisable(true);
+            }
+        });
+        
+        continueGameButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent arg0) {
+                // TODO Auto-generated method stub
+                timer.start();
+                pauseSubScreen.moveSubScene();
+                pauseGameButton.setDisable(false);
+            }
+        });
+        
+        createPauseSubScreen();
+        
 	    try {
 			createMap();
 		} catch (IOException e) {
 			System.out.println("Exception in create map");
 			e.printStackTrace();
 		}
-        
+	    menuStage.show();
     }
 
     public void createMap() throws IOException {
@@ -233,6 +331,9 @@ public class BombermanGame extends Application {
     }
 
     public void update() {
+        if (second == 0) {
+            bomberman.remove();
+        }
     	if(bomberman.isRemoved()) {
     		System.out.println("Died");
     		canvas.setDisable(true);
@@ -245,6 +346,7 @@ public class BombermanGame extends Application {
     	if(nextLevel() == true && ((bomberman.getX() / 32) * 32) == portal.getX() 
     			&& ((bomberman.getY() / 32) * 32) == portal.getY()) {
     		try {
+    		    createLabel();
 				createMap();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -288,6 +390,10 @@ public class BombermanGame extends Application {
 				}
 			}
 		}
+		bombCountLabel.setText(numBomb + "");
+		flameCountLabel.setText(Bomb.getFlameLength() + 1 + "");
+		speedCountLabel.setText(Bomber.getTimeSpeed() + "");
+		scorelLabel.setText("SCORE: " + score);
     }
 
     public void render() {
@@ -387,9 +493,12 @@ public class BombermanGame extends Application {
     }
     
     public void playAgain() {
+        createLabel();
         bomberman = null;
         numBomb = 1;
         Bomb.setFlameLength(0);
+        Bomber.setTimeSpeed(0);
+        score = 0;
         try {
             createMap();
         } catch (IOException e) {
@@ -401,5 +510,102 @@ public class BombermanGame extends Application {
         menuButton.setVisible(false);
     }
     
+    public void createLabel() {
+        second = 300;
+        //set time
+        clockImageView.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 10);
+        clockImageView.setLayoutY(96);
+        timeCountLabel.setStyle("-fx-background-color: black");
+        timeCountLabel.setTextFill(Color.WHITE);
+        timeCountLabel.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 54);
+        timeCountLabel.setLayoutY(96 + 10);
+        timeCountLabel.setMinWidth(50);
+        try {
+            timeCountLabel.setFont(Font.loadFont(new FileInputStream(font), 13));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        //set bomb
+        bombCountLabel.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 54);
+        bombCountLabel.setLayoutY(160 + 10);
+        bombCountLabel.setStyle("-fx-background-color: black");
+        bombCountLabel.setTextFill(Color.WHITE);
+        try {
+            bombCountLabel.setFont(Font.loadFont(new FileInputStream(font), 14));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        bombCountView.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 10);
+        bombCountView.setLayoutY(160);
+        //set flame
+        flameCountLabel.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 54);
+        flameCountLabel.setLayoutY(224 + 10);
+        flameCountLabel.setStyle("-fx-background-color: black");
+        flameCountLabel.setTextFill(Color.WHITE);
+        try {
+            flameCountLabel.setFont(Font.loadFont(new FileInputStream(font), 14));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        flameCountView.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 10);
+        flameCountView.setLayoutY(224);
+        //set speed
+        speedCountLabel.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 54);
+        speedCountLabel.setLayoutY(288 + 10);
+        speedCountLabel.setStyle("-fx-background-color: black");
+        speedCountLabel.setTextFill(Color.WHITE);
+        try {
+            speedCountLabel.setFont(Font.loadFont(new FileInputStream(font), 14));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        speedCountView.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 10);
+        speedCountView.setLayoutY(288);
+        // set logo
+        logoImageView.setLayoutX(WIDTH * Sprite.SCALED_SIZE);
+        logoImageView.setLayoutY(4);
+        //set pause button
+        pauseGameButton.setWidth(150);
+        pauseGameButton.setLayoutY(HEIGHT * Sprite.SCALED_SIZE - 64);
+        pauseGameButton.setLayoutX(WIDTH * Sprite.SCALED_SIZE);
+        //set play again button
+        playAgain.setLayoutX((Sprite.SCALED_SIZE * WIDTH + 128)/ 2 - 95);
+        playAgain.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 - 45);
+        //set menu button
+        menuButton.setLayoutX((Sprite.SCALED_SIZE * WIDTH + 128) / 2 - 95);
+        menuButton.setLayoutY(Sprite.SCALED_SIZE * HEIGHT / 2 + 45); 
+        //set score label
+        scorelLabel.setLayoutX(WIDTH * Sprite.SCALED_SIZE + 10);
+        scorelLabel.setLayoutY(352);
+        scorelLabel.setStyle("-fx-background-color: black");
+        scorelLabel.setTextFill(Color.WHITE);
+        try {
+            scorelLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\OXYGENE1.ttf"), 17));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public void createPauseSubScreen() {
+        Label pauseTextLabel = new Label("PAUSE");
+        try {
+            pauseTextLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\OXYGENE1.ttf"), 17));
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        pauseTextLabel.setLayoutX(pauseSubScreen.getWidth() / 2 - 24);
+        pauseTextLabel.setLayoutY(5);
+        pauseSubScreen.getPane().getChildren().addAll(pauseTextLabel, continueGameButton, quitButton);
+        continueGameButton.setLayoutY(40);
+        continueGameButton.setLayoutX((pauseSubScreen.getWidth() - continueGameButton.getPrefWidth()) / 2);
+        quitButton.setLayoutX((pauseSubScreen.getWidth() - continueGameButton.getPrefWidth()) / 2);
+        quitButton.setLayoutY(95);
+    }
     
 }

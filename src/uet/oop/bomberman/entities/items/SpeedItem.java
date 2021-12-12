@@ -54,25 +54,25 @@ public class SpeedItem extends Entity{
             Entity entity4 = BombermanGame.getItem(nextX_4 * size, nextY_4 * size);
             if (entity instanceof SpeedItem) {
                 if (entity.equals(this)) {
-                    bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                    bomber.setSpeed(bomber.getSpeed() + 1);
                     remove();
                 }
             }
             else if (entity2 instanceof SpeedItem) {
                 if (entity2.equals(this)) {
-                    bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                    bomber.setSpeed(bomber.getSpeed() + 1);
                     remove();
                 }
             }
             else if (entity3 instanceof SpeedItem) {
                 if (entity3.equals(this)) {
-                    bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                    bomber.setSpeed(bomber.getSpeed() + 1);
                     remove();
                 }
             }
             else if (entity4 instanceof SpeedItem) {
                 if (entity4.equals(this)) {
-                    bomber.setSpeed(bomber.getSpeed() + bomber.getSpeed());
+                    bomber.setSpeed(bomber.getSpeed() + 1);
                     remove();
                 }
             }

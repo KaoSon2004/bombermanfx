@@ -9,7 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 
 public class InfoLabel extends Label {
-	public final static String FONT_PATH = "src/Menu.resource/PixelEmulator-xq08.ttf";
+	public final static String FONT_PATH = "src/Menu/resource/PixelEmulator-xq08.ttf";
 	
 	public InfoLabel(String text) {
 		setPrefWidth(600);
@@ -24,7 +24,7 @@ public class InfoLabel extends Label {
 		try {
 			setFont(Font.loadFont(new FileInputStream(new File(FONT_PATH)), 23));
 		} catch (FileNotFoundException e) {
-			setFont(Font.font("Verdana", 23));
+			//setFont(Font.font("Verdana", 23));
 		}
 	}
 }

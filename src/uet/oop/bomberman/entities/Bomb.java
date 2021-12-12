@@ -215,5 +215,9 @@ public class Bomb extends Entity{
 	public static void upFlameLength() {
 	    length++;
 	}
+	
+	public static int getFlameLength() {
+	    return length;
+	}
 
 }
