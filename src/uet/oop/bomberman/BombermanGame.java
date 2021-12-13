@@ -350,7 +350,7 @@ public class BombermanGame extends Application {
                 } else {
                     isPlayMusic = true;
                     audioButton.setImage("/Menu/resource/audioOn.png");
-                    gameSound.setVolume(-30);
+                    gameSound.setVolume(-20);
                     gameSound.setMusic(true);
                     failSound.setMusic(true);
 
@@ -395,6 +395,7 @@ public class BombermanGame extends Application {
     }
 
     public void createMap() throws IOException {
+        maze = new int[18][31];
     	entities.clear();
     	stillObjects.clear();
     	items.clear();
@@ -444,7 +445,7 @@ public class BombermanGame extends Application {
                     entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
 				else if(line.charAt(i) == 'd') {
-				    //entities.add(new Doll(i, rowCount, Sprite.doll_left1.getFxImage()));
+				    entities.add(new Doll(i, rowCount, Sprite.doll_left1.getFxImage()));
 				    stillObjects.add(new Grass(i, rowCount, Sprite.grass.getFxImage()));
 				    }
 				else if(line.charAt(i) == 'b') {

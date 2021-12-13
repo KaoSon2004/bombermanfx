@@ -22,7 +22,7 @@ public class Doll extends Enemy {
     private int time = 60;
     public static int maze[][];
     public int sol[][];
-    public List <Integer> path = new ArrayList<>();
+    public List <Integer> path;
     public static boolean visited[][];
     public boolean found;
 	int col = -1;
@@ -31,6 +31,9 @@ public class Doll extends Enemy {
 		super(xUnit, yUnit, img);
 		maze =  BombermanGame.maze;
 		direction = - 1;
+		sol = new int[18][31];
+		path = new ArrayList<>();
+		found = false;
 	}
 
 	@Override
