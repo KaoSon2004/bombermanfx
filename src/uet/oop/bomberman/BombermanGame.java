@@ -431,12 +431,12 @@ public class BombermanGame extends Application {
 						entities.add(bomberman);
 				}
 				else if(line.charAt(i) == '1') {
-						//entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
+						entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 						
 				}
 				else if(line.charAt(i) == '2') {
-						//entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
+						entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 				}
 				else if(line.charAt(i) == 's') {
@@ -555,7 +555,7 @@ public class BombermanGame extends Application {
 		bombCountLabel.setText(numBomb + "");
 		flameCountLabel.setText(Bomb.getFlameLength() + 1 + "");
 		speedCountLabel.setText(Bomber.getTimeSpeed() + "");
-		scorelLabel.setText("SCORE: " + score);
+		scorelLabel.setText("SCORE: " + score + "\nLevel: " + level);
     }
 
     public void render() {
@@ -750,7 +750,7 @@ public class BombermanGame extends Application {
         scorelLabel.setStyle("-fx-background-color: black");
         scorelLabel.setTextFill(Color.WHITE);
         try {
-            scorelLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\OXYGENE1.ttf"), 17));
+            scorelLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\RUBBBB__.TTF"), 17));
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
