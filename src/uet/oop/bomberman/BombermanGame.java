@@ -334,11 +334,17 @@ public class BombermanGame extends Application {
                 if (isPlayMusic) {
                     isPlayMusic = false;
                     audioButton.setImage("/Menu/resource/audioOff.png");
+                    gameSound.setFile(1);
                     gameSound.setVolume(-79);
+                    gameSound.setMusic(false);
+                    failSound.setMusic(false);
                 } else {
                     isPlayMusic = true;
                     audioButton.setImage("/Menu/resource/audioOn.png");
                     gameSound.setVolume(-30);
+                    gameSound.setMusic(true);
+                    failSound.setMusic(true);
+
                 }
             }
         });
@@ -351,9 +357,19 @@ public class BombermanGame extends Application {
                 if (isPlaySound) {
                     isPlaySound = false;
                     soundButton.setImage("/Menu/resource/soundOff.png");
+                    bombSetSound.setSound(false);
+                    bombExSound.setSound(false);
+                    itemSound.setSound(false);
+                    enemyDieSound.setSound(false);
+                    cliSound.setSound(false);
                 } else {
                     isPlaySound = true;
                     soundButton.setImage("/Menu/resource/soundOn.png");
+                    bombSetSound.setSound(true);
+                    bombExSound.setSound(true);
+                    itemSound.setSound(true);
+                    enemyDieSound.setSound(true);
+                    cliSound.setSound(true);
                 }
             }
         });

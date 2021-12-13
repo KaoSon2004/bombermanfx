@@ -8,6 +8,8 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
 public class Sound {
+    private boolean isPlaySound = true;
+    private boolean isPlayMusic = true;
 	Clip clip;
 	String[] urlStrings = new String[10];
 	public Sound() {
@@ -32,16 +34,19 @@ public class Sound {
 	}
 	
 	public void play() {
-		clip.start();
+	    if (isPlaySound) {
+	        clip.start();
+	    }
 	}
 	
 	public void loop() {
-		clip.loop(Clip.LOOP_CONTINUOUSLY);
-		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volume.setValue((float) -30);
+	    if (isPlayMusic) { 
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
+	        FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+	        volume.setValue((float) -30);
+	    }
+    }
 		
-		
-	}
 	
 	public void stop() {
 		if(clip != null)
@@ -56,4 +61,11 @@ public class Sound {
 		return clip;
 	}
 	
+	public void setSound(boolean b) {
+	    isPlaySound = b;
+	}
+	
+	public void setMusic(boolean b) {
+        isPlayMusic = b;
+    }
 }

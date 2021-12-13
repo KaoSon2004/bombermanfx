@@ -126,6 +126,7 @@ public class IntroSubScene extends SubScene {
         };
         introSound.setFile(0);
         introSound.loop();
+        introSound.setVolume(-30);
         animationTimer.start();
     }
     
