@@ -24,6 +24,7 @@ import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
 import uet.oop.bomberman.entities.Brick;
 import uet.oop.bomberman.entities.Doll;
+import uet.oop.bomberman.entities.Enemy;
 import uet.oop.bomberman.entities.Entity;
 import uet.oop.bomberman.entities.Grass;
 import uet.oop.bomberman.entities.Oneal;
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BombermanGame extends Application {
+    boolean isWinGame = false;
     private double xOffset = 0;
     private double yOffset = 0;
     public static final int WIDTH = 31;
@@ -70,6 +72,7 @@ public class BombermanGame extends Application {
 	private int second = 300;
 	public static Sound gameSound = new Sound();
 	public static Sound failSound = new Sound();
+	public static Sound winSound = new Sound();
 	public static Sound bombSetSound = new Sound();
 	public static Sound bombExSound = new Sound();
 	public static Sound itemSound = new Sound();
@@ -84,6 +87,8 @@ public class BombermanGame extends Application {
 	//load bomber death
 	private Image image = new Image("Menu/resource/maxresdefault.jpg", Sprite.SCALED_SIZE * WIDTH + 128, Sprite.SCALED_SIZE * HEIGHT, false, true);
 	private ImageView imageView = new ImageView(image);
+	private Image winImage = new Image("Menu/resource/win.jpg", Sprite.SCALED_SIZE * WIDTH + 128, Sprite.SCALED_SIZE * HEIGHT, false, true);
+    private ImageView winImageView = new ImageView(winImage);
 	
 	private MenuButton playAgain = new MenuButton("Play Again");
 	private MenuButton menuButton = new MenuButton("Menu");
@@ -126,6 +131,7 @@ public class BombermanGame extends Application {
         imageView.setVisible(false);
         playAgain.setVisible(false);
         menuButton.setVisible(false);
+        winImageView.setVisible(false);
         canvas.requestFocus();
         canvas.setFocusTraversable(true);
         canvas.addEventFilter(MouseEvent.ANY, (e) -> canvas.requestFocus());
@@ -213,6 +219,7 @@ public class BombermanGame extends Application {
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+			    winSound.setFile(8);
 				cliSound.setFile(7);
 				cliSound.play();
 				IntroSubScene.introSound.stop();
@@ -224,7 +231,7 @@ public class BombermanGame extends Application {
 		        root.getChildren().add(canvas);
 		        root.getChildren().addAll(timeCountLabel, clockImageView, bombCountView, bombCountLabel, flameCountView, 
 		                flameCountLabel, speedCountLabel, speedCountView, logoImageView, scorelLabel, pauseGameButton, pauseSubScreen,
-		                imageView, playAgain, menuButton);
+		                imageView, winImageView, playAgain, menuButton);
 		        Scene scene = new Scene(root, Sprite.SCALED_SIZE * WIDTH + 128, Sprite.SCALED_SIZE * HEIGHT);
 		     // xử lí khi nhấn phím
 		        
@@ -268,6 +275,7 @@ public class BombermanGame extends Application {
                 failSound.stop();
                 IntroSubScene.introSound.setFile(0);
                 IntroSubScene.introSound.loop();
+                IntroSubScene.introSound.setVolume(-20);
                 stage.hide();
                 timer.stop();
                 menuStage.show();
@@ -286,6 +294,7 @@ public class BombermanGame extends Application {
             	gameSound.stop();
             	IntroSubScene.introSound.setFile(0);
             	IntroSubScene.introSound.play();
+            	IntroSubScene.introSound.setVolume(-20);
                 scoreScreen.updateScore();
                 menu.setScore();
                 pauseSubScreen.moveSubScene();
@@ -421,32 +430,32 @@ public class BombermanGame extends Application {
 						entities.add(bomberman);
 				}
 				else if(line.charAt(i) == '1') {
-						entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
+						//entities.add(new Balloon(i , rowCount , Sprite.balloom_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 						
 				}
 				else if(line.charAt(i) == '2') {
-						entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
+						//entities.add(new Oneal(i , rowCount , Sprite.oneal_left1.getFxImage()));
 						stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
 				}
 				else if(line.charAt(i) == 's') {
                     items.add(new SpeedItem(i , rowCount , Sprite.powerup_speed.getFxImage()));
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
-                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                    entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
 				else if(line.charAt(i) == 'd') {
-				    entities.add(new Doll(i, rowCount, Sprite.doll_left1.getFxImage()));
+				    //entities.add(new Doll(i, rowCount, Sprite.doll_left1.getFxImage()));
 				    stillObjects.add(new Grass(i, rowCount, Sprite.grass.getFxImage()));
 				    }
 				else if(line.charAt(i) == 'b') {
                     items.add(new BombItem(i , rowCount , Sprite.powerup_bombs.getFxImage()));
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
-                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                    entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
 				else if(line.charAt(i) == 'f') {
                     items.add(new FlameItem(i , rowCount , Sprite.powerup_flames.getFxImage()));
                     stillObjects.add(new Grass(i , rowCount , Sprite.grass.getFxImage()));
-                    //entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
+                    entities.add(new Brick(i , rowCount , Sprite.brick.getFxImage()));   
                 }
 			}
 			rowCount++;
@@ -469,8 +478,22 @@ public class BombermanGame extends Application {
     	if(nextLevel() == true && ((bomberman.getX() / 32) * 32) == portal.getX() 
     			&& ((bomberman.getY() / 32) * 32) == portal.getY()) {
     		try {
-    		    createLabel();
-				createMap();
+    		    if (level < 3) {
+    	            level ++;
+    	            createLabel();
+    	            createMap(); 
+    		    } else {
+    		        winImageView.setVisible(true);
+                    playAgain.setVisible(true);
+                    menuButton.setVisible(true);
+                    if (isWinGame == false) {
+                        BombermanGame.gameSound.stop();
+                        BombermanGame.winSound.setFile(8);
+                        BombermanGame.winSound.loop();
+                        isWinGame = true;
+                    }
+                    
+    		    }
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -622,11 +645,10 @@ public class BombermanGame extends Application {
     
     public static boolean nextLevel() {
     	for(Entity entity : entities) {
-    		if(entity instanceof Balloon || entity instanceof Oneal) {
+    		if(entity instanceof Enemy) {
     			return false;
     		}
     	}
-    	level = 2;
     	return true;
     }
     
@@ -637,6 +659,7 @@ public class BombermanGame extends Application {
         createLabel();
         bomberman = null;
         numBomb = 1;
+        level = 1;
         Bomb.setFlameLength(0);
         Bomber.setTimeSpeed(0);
         score = 0;
@@ -649,6 +672,7 @@ public class BombermanGame extends Application {
         imageView.setVisible(false);
         playAgain.setVisible(false);
         menuButton.setVisible(false);
+        winImageView.setVisible(false);
     }
     
     public void createLabel() {

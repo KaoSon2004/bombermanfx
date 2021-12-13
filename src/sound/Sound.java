@@ -21,6 +21,7 @@ public class Sound {
 		urlStrings[5] = "res/sound/Item.wav";
 		urlStrings[6] = "res/sound/enemy_die.wav";
 		urlStrings[7] = "res/sound/Mousclik.wav";
+		urlStrings[8] = "res/sound/winmusic.wav";
 	}
 	public void setFile(int i) {
 		try {

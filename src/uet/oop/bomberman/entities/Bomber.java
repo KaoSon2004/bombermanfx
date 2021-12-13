@@ -42,7 +42,6 @@ public class Bomber extends Entity {
             }
             else {
                 BombermanGame.getEntities().remove(this);
-
             	BombermanGame.gameSound.stop();
             	BombermanGame.failSound.setFile(2);
             	BombermanGame.failSound.loop();
