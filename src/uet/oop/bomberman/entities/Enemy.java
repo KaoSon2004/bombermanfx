@@ -51,7 +51,7 @@ public class Enemy extends Entity {
         return collide(entity4) && collide(entity3) && collide(entity2) && collide(entity);
     }
     protected boolean collide(Entity e){
-        return (e instanceof Grass || e instanceof Bomber || e instanceof Balloon);
+        return (e instanceof Grass || e instanceof Bomber || e instanceof Enemy);
     }
     
     protected boolean collideBomb(Entity e){
