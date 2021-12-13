@@ -17,23 +17,20 @@ import uet.oop.bomberman.entities.items.FlameItem;
 import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 
-public class Doll extends Entity {
-    private int direction = -1;
-    private int speed = Sprite.SCALED_SIZE / 16;
+public class Doll extends Enemy {
+ 
     private int time = 60;
-    private int countAnimation = 4;
-    private int num = 0;
     public static int maze[][];
     public int sol[][];
     public List <Integer> path = new ArrayList<>();
     public static boolean visited[][];
     public boolean found;
-    private Random random = new Random();
 	int col = -1;
 	int row = -1;
 	public Doll(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
 		maze =  BombermanGame.maze;
+		direction = - 1;
 	}
 
 	@Override
@@ -172,59 +169,10 @@ public class Doll extends Entity {
 	    			[BombermanGame.getPlayer().getX() / Sprite.SCALED_SIZE] = 9; 
     	}
     }
-    public void checkPlayer() {
-        Bomber bomber = (Bomber) BombermanGame.getPlayer();
-        if (bomber != null) {
-            //System.out.println(bomber.isRemoved());
-            if(bomber.getX() <= x + 30 && bomber.getY() <= y + 30
-                    && bomber.getX() + 22 >= x + 30 && bomber.getY() + 28 >= y + 30) {
-                bomber.remove();
-            }
-            if(bomber.getX() + 22 >= x && bomber.getY() <= y + 30
-                    && bomber.getX() <= x && bomber.getY() + 28 >= y + 30) {
-                bomber.remove();
-            }
-            if(bomber.getX() <= x + 30 && bomber.getY() + 28 >= y 
-                    && bomber.getX() + 22 >= x + 30 && bomber.getY() <= y) {
-                bomber.remove();
-            }
-            if(bomber.getX() + 22 >= x && bomber.getY() + 28 >= y 
-                    && bomber.getX() <= x && bomber.getY() <= y) {
-                bomber.remove();
-            }
-            if(bomber.getX() >= x && bomber.getY() >= y 
-                    && bomber.getX() + 22 <= x && bomber.getY() + 28<= y) {
-                bomber.remove();
-            }
-        }
-    }
+
     
-	private void isDied() {
-        // TODO Auto-generated method stub
-	    int a = this.getX();
-        int b = this.getY();
-        int size = Sprite.SCALED_SIZE;
-        int nextX_1 = (a / size);
-        int nextY_1 = b / size;
-
-        int nextX_2 = (a + size - 10) / size;
-        int nextY_2 = b / size;
-
-        int nextX_3 = a / size;
-        int nextY_3 = (b + size - 4) / size;
-
-        int nextX_4 = (a + size - 10) / size;
-        int nextY_4 = (b + size - 4) / size; 
-        Entity entity5 = BombermanGame.getExplosion(nextX_1 * size, nextY_1 * size);
-        Entity entity6 = BombermanGame.getExplosion(nextX_2 * size, nextY_2 * size);
-        Entity entity7 = BombermanGame.getExplosion(nextX_3 * size, nextY_3 * size);
-        Entity entity8 = BombermanGame.getExplosion(nextX_4 * size, nextY_4 * size);
-        if(entity5 != null || entity6 != null || entity7 != null || entity8 != null ) {
-            BombermanGame.score += 200;
-            remove();
-        }
-    }
-    private boolean isCanMove(int a, int b) {
+    @Override
+    public boolean isCanMove(int a, int b) {
         int size = Sprite.SCALED_SIZE;
         int nextX_1 = (a / size);
         int nextY_1 = b / size;
