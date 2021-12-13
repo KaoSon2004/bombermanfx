@@ -22,6 +22,12 @@ public class Bomber extends Entity {
     @Override
     public void update() {
         if(isRemoved() == true) {
+            if(BombermanGame.bombExSound != null) {
+            	BombermanGame.bombExSound.stop();
+            }
+            if(BombermanGame.enemyDieSound != null) {
+            	BombermanGame.enemyDieSound.stop();
+            }
             if(time > 0) {
                 time --;
                 if(time < 15) {
@@ -36,6 +42,10 @@ public class Bomber extends Entity {
             }
             else {
                 BombermanGame.getEntities().remove(this);
+
+            	BombermanGame.gameSound.stop();
+            	BombermanGame.failSound.setFile(2);
+            	BombermanGame.failSound.loop();
             }
         } else {
             handleMove();

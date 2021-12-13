@@ -1,4 +1,4 @@
-package uet.oop.bomberman;
+ package uet.oop.bomberman;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import sound.Sound;
 import uet.oop.bomberman.entities.Balloon;
 import uet.oop.bomberman.entities.Bomb;
 import uet.oop.bomberman.entities.Bomber;
@@ -34,6 +35,7 @@ import uet.oop.bomberman.entities.items.FlameItem;
 import uet.oop.bomberman.entities.items.SpeedItem;
 import uet.oop.bomberman.graphics.Sprite;
 import Menu.GameButton;
+import Menu.IntroSubScene;
 import Menu.Menu;
 import Menu.MenuButton;
 import Menu.PauseSubScreen;
@@ -66,6 +68,13 @@ public class BombermanGame extends Application {
 	public static int numBomb = 1;
 	public static int score = 0;
 	private int second = 300;
+	public static Sound gameSound = new Sound();
+	public static Sound failSound = new Sound();
+	public static Sound bombSetSound = new Sound();
+	public static Sound bombExSound = new Sound();
+	public static Sound itemSound = new Sound();
+	public static Sound enemyDieSound = new Sound();
+	public static Sound cliSound = new Sound();
 	//create pause subScreen
 	private PauseSubScreen pauseSubScreen = new PauseSubScreen();
 	//load logo img
@@ -135,6 +144,8 @@ public class BombermanGame extends Application {
                 bomberman.setDirectionDown(true);
             }
             if(event.getCode() == KeyCode.SPACE && bombs.size() < numBomb) {
+            	bombSetSound.setFile(3);
+            	bombSetSound.play();
             	Bomb bomb = new Bomb((bomberman.getX() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE
             			, (bomberman.getY() + (Sprite.SCALED_SIZE / 2)) / Sprite.SCALED_SIZE, Sprite.bomb.getFxImage());
             	bombs.add(bomb);
@@ -190,6 +201,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+            	cliSound.setFile(7);
+            	cliSound.play();
+            	failSound.stop();
                 scoreScreen.updateScore();
                 menu.setScore();
                 playAgain();
@@ -199,6 +213,11 @@ public class BombermanGame extends Application {
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				cliSound.setFile(7);
+				cliSound.play();
+				IntroSubScene.introSound.stop();
+				gameSound.setFile(1);
+				gameSound.loop();
 		        AnchorPane root = new AnchorPane();
 		        root.setStyle("-fx-background-color: green");
 		        root.getChildren().add(canvas);
@@ -239,9 +258,15 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+            	cliSound.setFile(7);
+            	cliSound.play();
                 scoreScreen.updateScore();
                 menu.setScore();
                 playAgain();
+                gameSound.stop();
+                failSound.stop();
+                IntroSubScene.introSound.setFile(0);
+                IntroSubScene.introSound.loop();
                 stage.hide();
                 timer.stop();
                 menuStage.show();
@@ -255,11 +280,17 @@ public class BombermanGame extends Application {
             @Override
             public void handle(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+            	cliSound.setFile(7);
+            	cliSound.play();
+            	gameSound.stop();
+            	IntroSubScene.introSound.setFile(0);
+            	IntroSubScene.introSound.play();
                 scoreScreen.updateScore();
                 menu.setScore();
                 pauseSubScreen.moveSubScene();
                 pauseGameButton.setDisable(false);
                 playAgain();
+                gameSound.stop();
                 stage.hide();
                 timer.stop();
                 menuStage.show();
@@ -271,6 +302,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(MouseEvent arg0) {
                 // TODO Auto-generated method stub
+            	cliSound.setFile(7);
+            	cliSound.play();
+            	gameSound.stop();
                 timer.stop();
                 pauseSubScreen.moveSubScene();
                 pauseGameButton.setDisable(true);
@@ -282,6 +316,9 @@ public class BombermanGame extends Application {
             @Override
             public void handle(MouseEvent arg0) {
                 // TODO Auto-generated method stub
+            	cliSound.setFile(7);
+            	cliSound.play();
+            	gameSound.play();
                 timer.start();
                 pauseSubScreen.moveSubScene();
                 pauseGameButton.setDisable(false);
@@ -575,6 +612,8 @@ public class BombermanGame extends Application {
     }
     
     public void playAgain() {
+       	gameSound.setFile(1);
+    	gameSound.loop();
         createLabel();
         bomberman = null;
         numBomb = 1;

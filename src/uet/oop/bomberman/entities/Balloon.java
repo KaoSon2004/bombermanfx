@@ -28,6 +28,8 @@ public class Balloon extends Entity {
             }
             else {
                 BombermanGame.getEntities().remove(this);
+                BombermanGame.enemyDieSound.setFile(6);
+                BombermanGame.enemyDieSound.play();
             }
             if(time < 12) {
                 img = Sprite.mob_dead3.getFxImage();

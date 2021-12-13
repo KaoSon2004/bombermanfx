@@ -18,6 +18,7 @@ import javafx.scene.layout.BackgroundRepeat;
 
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import uet.oop.bomberman.BombermanGame;
 
 public class Menu {
     private double xOffset = 0;
@@ -88,6 +89,8 @@ public class Menu {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
+				BombermanGame.cliSound.setFile(7);
+				BombermanGame.cliSound.play();
 				// TODO Auto-generated method stub
 				showSubScene(creditSubScene);
 			}
@@ -103,6 +106,8 @@ public class Menu {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				BombermanGame.cliSound.setFile(7);
+				BombermanGame.cliSound.play();
 			    scoreScreen.exportToFile();
 				menuStage.close();
 			}
@@ -117,6 +122,8 @@ public class Menu {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
+				BombermanGame.cliSound.setFile(7);
+				BombermanGame.cliSound.play();
 				// TODO Auto-generated method stub
 				showSubScene(helpSubScene);
 			}
@@ -131,6 +138,8 @@ public class Menu {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
+				BombermanGame.cliSound.setFile(7);
+				BombermanGame.cliSound.play();
 				// TODO Auto-generated method stub
 				showSubScene(scoreSubScene);
 			}

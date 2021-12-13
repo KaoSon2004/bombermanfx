@@ -43,6 +43,8 @@ public class Bomb extends Entity{
 		
 	}
 	private void bombExplode() {
+		BombermanGame.bombExSound.setFile(4);
+		BombermanGame.bombExSound.play();
 		for(int i = 1; i <= length + 1; i++) {
 			if(BombermanGame.getEntity((x - i * Sprite.SCALED_SIZE) , (y) ) instanceof Wall) {
 				break;

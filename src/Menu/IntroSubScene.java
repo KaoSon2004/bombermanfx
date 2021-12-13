@@ -15,7 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.util.Duration;
-import sound.SoundEffect; 
+import sound.Sound;
 
 
 public class IntroSubScene extends SubScene {
@@ -56,7 +56,7 @@ public class IntroSubScene extends SubScene {
             , cloudLonelyImageView2, moutainImageView, moutainImageView2, cloudAImageView, cloudBImageView
             , cloud2AImageView, cloud2BImageView, cloud3AImageView, cloud3BImageView, logoImageView};
     private static boolean isDisappear = false;
-    
+    public static Sound introSound = new Sound();
     public static boolean isDisappear() {
         return isDisappear;
     }
@@ -124,7 +124,8 @@ public class IntroSubScene extends SubScene {
                 handleAnimetion();
             }
         };
-        SoundEffect.loop("src/Menu/resource/Title.wav");
+        introSound.setFile(0);
+        introSound.loop();
         animationTimer.start();
     }
     
