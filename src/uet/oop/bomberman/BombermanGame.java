@@ -230,7 +230,6 @@ public class BombermanGame extends Application {
 		        //Stage gameStage = new Stage();
 		        stage.setScene(scene);
 		        menuStage.hide();
-		        stage.initStyle(StageStyle.UNDECORATED);
 		        scene.setOnMousePressed(new EventHandler<MouseEvent>() {
 		            @Override
 		            public void handle(MouseEvent event) {
@@ -252,7 +251,8 @@ public class BombermanGame extends Application {
 			}
 		});
 		
-        
+        stage.initStyle(StageStyle.UNDECORATED);
+
         menuButton.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override

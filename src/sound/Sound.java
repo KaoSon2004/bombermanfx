@@ -11,14 +11,14 @@ public class Sound {
 	Clip clip;
 	String[] urlStrings = new String[10];
 	public Sound() {
-		urlStrings[0] = "/Bombermanfx/src/Menu/resource/Title.wav";
-		urlStrings[1] = "/Bombermanfx/res/sound/1-03. World Map.wav";
-		urlStrings[2] = "/Bombermanfx/res/sound/1-11. Fail.wav"; 
-		urlStrings[3] = "/Bombermanfx/res/sound/BombSet.wav";
-		urlStrings[4] = "/Bombermanfx/res/sound/BombExplode.wav";
-		urlStrings[5] = "/Bombermanfx/res/sound/Item.wav";
-		urlStrings[6] = "/Bombermanfx/res/sound/enemy_die.wav";
-		urlStrings[7] = "/Bombermanfx/res/sound/Mousclik.wav";
+		urlStrings[0] = "src/Menu/resource/Title.wav";
+		urlStrings[1] = "res/sound/1-03. World Map.wav";
+		urlStrings[2] = "res/sound/1-11. Fail.wav"; 
+		urlStrings[3] = "res/sound/BombSet.wav";
+		urlStrings[4] = "res/sound/BombExplode.wav";
+		urlStrings[5] = "res/sound/Item.wav";
+		urlStrings[6] = "res/sound/enemy_die.wav";
+		urlStrings[7] = "res/sound/Mousclik.wav";
 	}
 	public void setFile(int i) {
 		try {
@@ -38,7 +38,7 @@ public class Sound {
 	public void loop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volume.setValue((float) 0.15);
+		volume.setValue((float) 0.1);
 		
 	}
 	
@@ -46,4 +46,5 @@ public class Sound {
 		if(clip != null)
 			clip.stop();
 	}
+	
 }
