@@ -13,6 +13,8 @@ public class Oneal extends Enemy {
 	public Oneal(int xUnit, int yUnit, Image img) {
 		super(xUnit, yUnit, img);
 		player = (Bomber) BombermanGame.getPlayer();
+		if (BombermanGame.level <= 3)
+	        speed = BombermanGame.level;
 	}
 	
 	@Override

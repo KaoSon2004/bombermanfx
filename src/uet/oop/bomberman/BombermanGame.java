@@ -56,7 +56,7 @@ public class BombermanGame extends Application {
     public static final int WIDTH = 31;
     public static final int HEIGHT = 18;
     private String font = "src\\Menu\\resource\\RUBBBB__.ttf";
-    public static int level = 1;
+    public static int level = 2;
     private GraphicsContext gc;
     private Canvas canvas;
     private static List<Entity> entities = new ArrayList<>();
@@ -750,7 +750,7 @@ public class BombermanGame extends Application {
         scorelLabel.setStyle("-fx-background-color: black");
         scorelLabel.setTextFill(Color.WHITE);
         try {
-            scorelLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\RUBBBB__.TTF"), 17));
+            scorelLabel.setFont(Font.loadFont(new FileInputStream("src\\Menu\\resource\\RUBBBB__.TTF"), 15));
         } catch (FileNotFoundException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
