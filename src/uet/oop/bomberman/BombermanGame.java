@@ -216,6 +216,7 @@ public class BombermanGame extends Application {
 				cliSound.setFile(7);
 				cliSound.play();
 				IntroSubScene.introSound.stop();
+				
 				gameSound.setFile(1);
 				gameSound.loop();
 		        AnchorPane root = new AnchorPane();
@@ -333,9 +334,11 @@ public class BombermanGame extends Application {
                 if (isPlayMusic) {
                     isPlayMusic = false;
                     audioButton.setImage("/Menu/resource/audioOff.png");
+                    gameSound.setVolume(-79);
                 } else {
                     isPlayMusic = true;
                     audioButton.setImage("/Menu/resource/audioOn.png");
+                    gameSound.setVolume(-30);
                 }
             }
         });
@@ -613,7 +616,8 @@ public class BombermanGame extends Application {
     
     public void playAgain() {
        	gameSound.setFile(1);
-    	gameSound.loop();
+       	if(isPlayMusic)
+       		gameSound.loop();
         createLabel();
         bomberman = null;
         numBomb = 1;

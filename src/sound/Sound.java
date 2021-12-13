@@ -38,13 +38,22 @@ public class Sound {
 	public void loop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-		volume.setValue((float) 0.1);
+		volume.setValue((float) -30);
+		
 		
 	}
 	
 	public void stop() {
 		if(clip != null)
 			clip.stop();
+	}
+	public void setVolume(double i) {
+		FloatControl volume = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		volume.setValue((float) i);
+	}
+	
+	public Clip getClip() {
+		return clip;
 	}
 	
 }
